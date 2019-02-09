@@ -1,0 +1,34 @@
+package cn.zam.oop;
+
+public class Point {
+	double x,y,z;
+	//通过构造方法初始化对象的属性；
+	public Point(double a,double b,double c) {
+		x=a;
+		y=b;
+		z=c;
+	}
+	//提供可以设置三个坐标的方法
+	public void setX(double a) {
+		x=a;
+	}
+	public void setY(double b) {
+		y=b;
+	}
+	public void setZ(double c) {
+		z=c;
+	}
+	//可以计算该点距离另外点距离平方的方法
+	public double distance(Point q) {
+		double result = Math.sqrt((x-q.x)*(x-q.x)+(y-q.y)*(y-q.y)+(z-q.z)*(z-q.z));
+		return result;
+	}
+	
+	public static void main(String args[]) {
+		Point p = new Point(3,4,8);
+		Point p2 = new Point(200,40,80);
+		p.setX(10);
+		System.out.println(p.x);
+		System.out.println(p.distance(p2));
+	}
+}
