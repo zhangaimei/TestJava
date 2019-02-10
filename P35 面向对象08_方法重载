@@ -1,0 +1,38 @@
+package cn.zam.oop;
+
+public class TestOverload {
+	//方法的重载
+	public int add(int a, int b) {
+		return a+b;
+	}
+	
+	public static void main(String args[]) {
+		MyMath m = new MyMath(6);
+		int a = m.add(5.7, 94);
+		int b = m.add(6, 35, 96);
+		System.out.println(a);
+		System.out.println(b);
+	}
+}
+class MyMath{
+	int a;
+	int b;
+	//构造方法的重载
+	public MyMath(int a) {
+		this.a = a;
+	}
+	public MyMath(int a, int b) {
+		this.a = a;
+		this.b = b;
+	}
+	//方法的重载
+	public int add(double a, int b) {
+		return (int)(a+b);
+	}
+	public int add(int a, double b) {
+		return (int)(a+b);
+	}
+	public int add(int a, int b, int c) {
+		return a+b+c;
+	}
+}
