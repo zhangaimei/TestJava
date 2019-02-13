@@ -1,0 +1,36 @@
+package cn.bjsxt.oop.static00;
+
+public class Student {
+		String name;
+		int id;
+		int age;
+		
+		//静态方法内不能调用普通方法
+		static int ss;
+		public static void PrintSs(){
+			System.out.println(ss);
+		}
+		
+		//普通方法内可以调用静态方法
+		public void study() {
+			System.out.println(name+"在学习");
+			PrintSs();
+		}
+		
+		public void SayHello(String sname) {
+			System.out.println(name+"向"+sname+"说，你好！");
+		}
+	}
+  
+/*
+ * 测试静态方法
+ */
+package cn.bjsxt.oop.static00;
+
+public class Test {
+	public static void main(String[] args){
+	Student.ss = 355;
+	Student.PrintSs();
+	Student s1 = new Student();
+	}
+}
