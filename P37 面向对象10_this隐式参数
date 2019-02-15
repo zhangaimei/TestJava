@@ -1,1 +1,32 @@
+package cn.bjsxt.oop.TestThis;
+
+public class Student {
+		String name;
+		int id;
+		
+		//构造方法中区分两个name
+		public Student(String name,int id){
+			this(name);//通过this调用其它构造器，必须位于第一句。Constructor call must be the first statement in a constructor
+			this.name= name;
+			this.id = id;
+		}
+		
+		//重载构造器
+		public Student(String name){
+			System.out.println("构造一个对象");
+		}
+		public Student(){
+			System.out.println("构造一个对象");
+		}
+		
+		//普通方法
+		public void SetName(String name) {
+			this.name  = name;
+		}
+		public void study() {
+			this.name = "张爱梅";
+		}
+	}
+
+
 
