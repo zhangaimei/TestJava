@@ -1,0 +1,28 @@
+package cn.zam.oop.inherit;
+
+public class Animal {
+	String eys;
+	public void run() {
+		System.out.println("跑跑！");
+	}
+	public void eat() {
+		System.out.println("吃吃！");
+	}
+	public void sleep() {
+		System.out.println("zzzzzz");
+	}
+}
+
+//继承实现了代码的复用
+class Mammal extends Animal{
+	public void Viviparity() {
+		System.out.println("我是胎生！");
+	}
+}
+class Reptiles extends Animal{
+	public void Oviparous() {
+		System.out.println("我是卵生！");
+	}
+}
+
+
