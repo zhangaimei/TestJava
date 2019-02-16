@@ -1,0 +1,38 @@
+package cn.bjsxt.opp.TestObject;
+
+public class TestObject {
+	public static void main(String[] args) {
+		Object obj = new Object();
+		Object obj2 = new Object();
+		System.out.println(obj.toString());
+		System.out.println(obj2.toString());
+		System.out.println(obj==obj2);
+		System.out.println(obj.equals(obj2));
+		
+		//覆盖了toString()
+		Mobile m = new Mobile();
+		System.out.println(m.toString());
+	}
+
+}
+
+
+
+Console：
+java.lang.Object@6d06d69c
+false
+false
+我是一部移动电话
+
+
+
+package cn.bjsxt.opp.TestObject;
+
+public class Mobile {
+	public String toString() {
+		return("我是一部移动电话");
+	}
+
+}
+
+
