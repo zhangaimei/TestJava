@@ -1,0 +1,23 @@
+package cn.zam.oop.TestFinal;
+
+import cn.zam.oop.inherit.Animal;
+
+public class TestFinal {
+	public static void main(String[] args) {
+		final int Max_Value = 299;	//Max_Value只能=299，只能初始化一次为常量。
+		double d = Math.PI;	//JDK中Math类即被final修饰，不能被继承
+	}
+}
+/*final*/ class Animal3 {	//final修饰类则说明这个类不能被继承。
+	public /*final*/ void  run() {	//final加到方法前面，意味着该方法不能被子类重写
+		System.out.println("跑跑！");
+	}
+}
+class Reptiles extends Animal3{
+	public void run() {
+		super.run();
+		System.out.print("我是一条蛇，爬呀爬！");
+	}
+}	
+
+
