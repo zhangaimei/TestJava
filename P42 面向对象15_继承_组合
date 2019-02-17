@@ -1,0 +1,56 @@
+package cn.zam.oop.inherit;
+/**
+ * 测试组合
+ * @author zam
+ *
+ */
+public class Animal2 {
+	String eys;
+	public void run() {
+		System.out.println("跑跑！");
+	}
+	public void eat() {
+		System.out.println("吃吃！");
+	}
+	public void sleep() {
+		System.out.println("zzzzzz");
+	}
+	
+	//测试
+	public static void main(String[] args) {
+		Reptiles2 r = new Reptiles2();
+		r.run();
+		r.animal2.eat();
+	}
+}
+
+//组合
+class Mammal2 {
+	Animal2 animal2;	//将animal作为一个属性放这。可通过Mammal2.animal2来调用
+	public void Viviparity() {
+		System.out.println("我是胎生！");
+	}
+}
+
+//组合并重写run()
+class Reptiles2 {
+	Animal2 animal2 = new Animal2();
+	public void run() {
+		animal2.run();
+		System.out.print("我是一条蛇，爬呀爬！");
+	}
+	public void Oviparous2() {
+		System.out.println("我是卵生！");
+	}
+}
+
+
+Consle：
+at cn.zam.oop.inherit.Reptiles2.run(Animal2.java:36)
+	at cn.zam.oop.inherit.Animal2.main(Animal2.java:20)
+  
+  空指针异常：	Animal2 animal2;没有指向对象， animal2.run();不能调annimal2里的方法。
+  
+Consle：
+  跑跑！
+我是一条蛇，爬呀爬！
