@@ -1,0 +1,60 @@
+package cn.bjsxt.oop.polymorphism;
+
+public class Animal {
+	public void voice() {
+		System.out.println("普通动物叫声");
+	}
+}
+class Cat extends Animal{
+	public void voice() {
+		System.out.println("喵喵喵");
+	}
+	public void CatchRat() {
+		System.out.println("抓老鼠");
+	}
+}
+class Dog extends Animal{
+	public void voice() {
+		System.out.println("汪汪汪");
+	}
+	public void Guard() {
+		System.out.println("看门");
+	}
+}
+class Pig extends Animal{
+	public void voice() {
+		System.out.println("哼哼哼");
+	}
+}
+
+
+
+package cn.bjsxt.oop.polymorphism;
+
+public class Test {
+	public static void TestVoice(Animal h) {
+		h.voice();
+		if (h instanceof Cat) {	//判断一个对象是不是这个类型的对象
+			((Cat)h).CatchRat();
+		}
+	}
+	public static void main(String[] args) {
+		Animal c = new Cat();
+		Animal d = new Dog();
+		Animal p = new Pig();
+		TestVoice(c);
+		TestVoice(d);
+		TestVoice(p);
+		Cat C = (Cat)c;	//将Animal c 强制转型为Cat c
+		C .CatchRat();
+	}
+
+}
+
+
+
+Console:
+喵喵喵
+汪汪汪
+哼哼哼
+抓老鼠
