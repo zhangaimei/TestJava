@@ -1,0 +1,22 @@
+package cn.bjsxt.oop.abstactClass;
+
+//抽象类
+public abstract class Animal {
+	String str;
+	public abstract void run();	//抽象方法的意义在于将方法的设计与方法的实现分离了
+	public void breath() {
+		System.out.println("呼吸！");
+		run();
+	}
+class cat extends Animal{
+	public void run() {
+		System.out.println("猫步");	//子类必须继承父类的抽象方法。
+	}
+}
+class dog extends Animal{
+	public void run() {
+		System.out.println("狗步！");
+	}
+}
+
+}
