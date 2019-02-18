@@ -1,0 +1,37 @@
+package cn.bjsxt.oop.polymorphism.myServlet;
+
+public class HttpServlet {
+	public void service() {
+		System.out.println("HttpServlet.service()");
+		doGet();
+	}
+	public void doGet() {
+		System.out.println("HttpService.doGet()");
+	}
+}
+
+
+
+package cn.bjsxt.oop.polymorphism.myServlet;
+
+public class Myservlet extends HttpServlet {
+	public void doGet() {
+		System.out.println("Myservlet.doGet()");
+	}
+}
+
+
+package cn.bjsxt.oop.polymorphism.myServlet;
+
+public class Test {
+	public static void main(String[] args) {
+		HttpServlet s = new Myservlet();
+		s.service();		//service();里调的doGet();是子类的doGet();
+	}
+}
+
+
+Console:
+HttpServlet.service()
+Myservlet.doGet()
+
