@@ -45,8 +45,8 @@ public class Test {
 		TestVoice(c);
 		TestVoice(d);
 		TestVoice(p);
-		Cat C = (Cat)c;	//将Animal c 强制转型为Cat c
-		C .CatchRat();
+		Cat e = (Cat)c;	//将Animal c 强制转型为Cat e
+		e .CatchRat();	//直接c.CatchRat();报错。c只指向cat里重写了的方法。c是Animal类，对象是Cat。this指向对象，在Animal类中找不到CatchRat();
 	}
 
 }
