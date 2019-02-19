@@ -1,0 +1,32 @@
+package cn.bjsxt.oop.innerclasses;
+
+public class Outer {
+	public static void main(String[] args) {
+		Face f = new Face();
+		Face.Nose n = f.new Nose();	//内部类不能直接创建对象，必须先有外部类对象
+		n.breath();
+		Face.Ear e = new Face.Ear();	//Face f = new Face();即外部类对象可以不存在
+		e.listen();
+	}
+
+}
+class Face{
+	int Type = 20;
+	String shape = "瓜子脸！";
+	static String color = "红色";
+	class Nose{
+		String Type;
+		public void breath() {	//非静态内部类不能定义static方法，因为此方法从属于对象f，而static从属于类
+			System.out.println(shape);
+			System.out.println(Face.this.Type);  //内部类可以访问外部类的属性。
+			System.out.println("呼吸！");
+		}
+	}
+	static class Ear{
+		public void listen() {
+			//System.out.println(Type);	报错，内部静态类不能调外部非静态类。
+			System.out.println(color);	//内部静态类可以访问外部静态属性
+			System.out.println("用耳朵听");
+		}
+	}
+}
