@@ -1,0 +1,99 @@
+package cn.bjsxt.oop.testInterface;
+
+public interface MyInterface {
+	//接口中只有常量和抽象方法。
+	/*public static final 接口中常量定义是，写或不写都是这样*/String Max_Great = "BOSS";
+	int Max_Spead = 120;
+	/*public abstract*/ void test01();
+	public int test02(int a,int b);
+}
+
+
+package cn.bjsxt.oop.testInterface;
+
+public  class MyClass implements MyInterface{
+	public void test01() {
+	}
+	public int test02(int a, int b) {
+		return a+b;
+	}
+}
+
+
+
+package cn.bjsxt.oop.testInterface;
+
+public interface Flyable {
+	int Max_Spead = 11000;
+	int Min_Hight = 1;
+	public void flyable();
+}
+interface attack{
+	public void attack();
+}
+class Plane implements Flyable{
+	public void flyable() {
+		System.out.println("飞机依靠发动机在飞");
+	}
+}
+class Man implements Flyable{
+	public void flyable() {
+		System.out.println("人跳起来，飞！");
+	}
+}
+
+//继承是单继承，无法实现，而接口可以实现多个接口
+class stone implements Flyable,attack{
+	int weight;
+	public void flyable() {
+		System.out.println("被人扔出去，飞");
+	}
+	public void attack() {
+		System.out.println("石头攻击");
+	}
+}
+
+
+
+package cn.bjsxt.oop.testInterface;
+
+public class Test {
+	public static void main(String[] args) {
+		Flyable s = new stone();
+		s.flyable();
+		stone s1 = (stone)s;
+	    s1.attack();
+	}
+}
+
+
+
+package cn.bjsxt.oop.testInterface;
+
+public interface InterfaceA {
+	void aaa();
+}
+
+interface InterfaceB{
+	void bbb();
+}
+
+interface InterfaceC extends InterfaceA,InterfaceB{
+	void ccc();
+}
+
+class TestClass implements InterfaceC{
+	@Override
+	public void aaa() {
+	}
+	@Override
+	public void bbb() {
+	}
+	@Override
+	public void ccc() {
+	}
+}
+
+
+
+
