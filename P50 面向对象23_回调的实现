@@ -1,0 +1,52 @@
+package cn.bjsxt.oop.callback;
+
+public class PaintFrame {
+	public static void drawFrame(IMyFrame f) {	//f=MyFrame
+		System.out.println("启动线程");
+		System.out.println("增加循环");
+		System.out.println("查看消息线");
+		
+		//画窗口	每次画的窗口不一样,只需要在调用Frame时，传一个子类对象。
+		f.paint();	//挂了什么子类就调什么子类方法。 其实就是多态
+		
+		System.out.println("启动缓存，增加效率");
+	}
+	
+	//MyFrame的子类也可以作MyFrame类传进来
+	public static void main(String[] args) {
+		drawFrame(new GameFrame02());	//new一个 窗口对象，往里传，重写了paint方法
+	}
+}
+
+class GameFrame01 implements IMyFrame{
+	public void paint() {
+		System.out.println("GameFrame01.paint()");
+		System.out.println("画窗口");
+	}
+}
+class GameFrame02 implements IMyFrame{
+	public void paint() {
+		System.out.println("GameFrame02.paint()");
+		System.out.println("画窗口");
+	}
+}
+
+
+Console:
+启动线程
+增加循环
+查看消息线
+GameFrame02.paint()
+画窗口
+启动缓存，增加效率
+
+
+package cn.bjsxt.oop.callback;
+
+
+public abstract class MyFrame {
+	public abstract void paint();	//普通类也可以，不是强制重写
+}
+interface IMyFrame{
+	void paint();
+}
