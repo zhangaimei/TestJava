@@ -1,0 +1,33 @@
+package cn.bjsxt.Array;
+
+public class Test01 {
+	public static void main(String[] args) {
+		/*
+		 * 1.数组是相同数据类型(数据类型可以为任何类型)的有序组合
+		 * 2.数组也是对象，数组元素的相当于对象的成员变量。（详情见内存图）
+		 * 3.数组长度是确定的，不可变的。如果越界，则报ArrayIndexOutOfBoundsException
+		 */
+		int[] a = new int[3];	
+		a[0] = 21;
+		a[1] = 22;
+		a[2] = 23;
+		
+		Car[] c = new Car[4];	//将类Car建为数组c
+		c[0] =new Car("奔驰");	//?? 将方法Car()赋给数组c
+		System.out.println(c[0].name);
+		
+		System.out.println(a.length);  //length是长度而不是方法。
+		for(int i=0;i<a.length;i++) {
+			System.out.println(a[i]);
+		}
+	}
+}
+
+
+
+Console：
+奔驰
+3
+21
+22
+23
