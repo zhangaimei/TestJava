@@ -25,6 +25,19 @@ public class Test01 {
 
 
 
+package cn.bjsxt.Array;
+
+public class Car {
+String name;
+	
+	public Car(String name) {
+		this.name = name;
+	}
+}
+
+
+
+
 Console：
 奔驰
 3
