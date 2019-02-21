@@ -1,0 +1,45 @@
+package cn.bjsxt.String;
+
+public class TestString {
+	public static void main(String[] args) {
+		String str = new String("abcd");
+		String str2 =new String("abcd");
+		System.out.println(str.equals(str2));	//比较内容是否相等
+		System.out.println(str==str2);
+		
+		String str3 = "def";
+		String str4 = "def";
+		System.out.println(str3.equals(str4));	
+		System.out.println(str3==str4);
+		
+		System.out.println(str3.indexOf('e'));	//找str3中'e'的索引位置
+		
+		String s = str3.substring(1);	
+	    System.out.println(s);
+	    
+	    String str5 = str4.replace('e', '*');
+	    System.out.println(str5); 	//替换
+	    
+	    String str6 ="aaaa,bbbb,cccc";
+	    String[] a = str6.split(",");
+	    for(int i=0;i<a.length;i++) {
+	    System.out.println(a[i]);
+	    }
+	    
+	    String str7 = "  aa  bb  ";
+	    String str77 = str7.trim();		//去除首尾空格
+	    System.out.println(str77.length());
+	}
+}
+
+
+
+Console：
+true
+1
+ef
+d*f
+aaaa
+bbbb
+cccc
+6
