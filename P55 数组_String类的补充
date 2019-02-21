@@ -1,0 +1,37 @@
+package cn.bjsxt.String;
+/**
+ * String:不可变字符序列
+ * @author zam
+ *
+ */
+public class TestString02 {
+
+	public static void main(String[] args) {
+		System.out.println("ABC".equalsIgnoreCase("abc"));
+		
+		System.out.println("abcd".indexOf('b'));
+		System.out.println("abcdbd".lastIndexOf('b'));
+		System.out.println("abcd".endsWith("cd"));
+		
+		System.out.println("Abcd".toLowerCase());
+		System.out.println("Abcd".toUpperCase());
+		
+		String g = new String("gh");//g前面没有final，g可以变；final value “gh”不可以变
+		for(int i=0;i<3;i++) {	//创建了5个对象	若String g ="gh";创建了4个对象。  	这样的利用字符串叠加代码浪费空间。
+			g = g+i;	
+		} 	
+		System.out.println(g);	
+	}
+}
+
+
+
+Console:
+true
+1
+4
+true
+abcd
+ABCD
+gh0123456789
+
