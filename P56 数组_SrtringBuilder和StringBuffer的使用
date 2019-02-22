@@ -1,0 +1,35 @@
+package cn.bjsxt.StringBuilder;
+/**
+ * 测试可变字符序列StringBuilde(线程不安全，效率高),StringBuffer(线程安全，效率低)
+ * String:不可变字符序列
+ * @author zam
+ *
+ */
+public class Test01 {
+	public static void main(String[] args) {
+		StringBuffer sb = new StringBuffer();	//字符数组长度初始为16
+		StringBuffer sb1 = new StringBuffer(46);	//字符数组长度初始为46
+		StringBuffer sb2 = new StringBuffer("abcd");	//字符数组长度初始为20.value[]={'a','b','c','d',/u0000,/u0000……}
+		sb2.append("dfg");	//将efg加到后面，所以是可变字符序列
+		sb2.append(true).append(333).append("张爱梅");		//源码中,通过return this实现方法链.
+		System.out.println(sb2);
+	}
+}
+
+
+Console:
+abcddfgtrue333张爱梅
+
+
+
+/*
+		String g = new String("gh");//g前面没有final，g可以变；final value “gh”不可以变
+		for(int i=0;i<1000;i++) {	//创建了1002个对象	若String g ="gh";创建了1001个对象。  	这样的利用字符串叠加代码浪费空间。
+			g = g+i;	
+		} 
+		*/	
+		StringBuilder g = new StringBuilder("gh");
+		for(int i=0;i<1000;i++) {	//创建了2个对象。
+			g.append(i);
+		}
+		System.out.println(g);	
