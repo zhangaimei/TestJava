@@ -1,0 +1,23 @@
+package cn.bjsxt.StringBuilder;
+/**
+ * 测试StringBuffer的常用方法
+ * @author zam
+ *
+ */
+public class Test02 {
+	public static void main(String[] args) {
+		StringBuffer sb = new StringBuffer("abcdefghijklmnopqrstuvwxyz");
+		sb.delete(3,7);		//包头不包尾
+		System.out.println(sb);
+		sb.reverse();
+		System.out.println(sb);
+		
+		StringBuffer sb2 = new StringBuffer();	//源码有加synchronized（同步的），比较安全
+	}
+}
+
+
+
+Console:
+abchijklmnopqrstuvwxyz
+zyxwvutsrqponmlkjihcba
