@@ -1,0 +1,27 @@
+package cn.bjsxt.test;
+
+public class Test01 {
+	public static void main(String[] args) {
+		Integer i = new Integer(1000);	//把1000包装成一个对象
+		
+		System.out.println(Integer.MAX_VALUE); 
+		System.out.println(Integer.toHexString(i));	//转为16进制
+		
+		Integer i2 =new Integer("333");	//把字符串转为了数字。
+		System.out.println(i2.intValue());
+		Integer i3 = Integer.parseInt("345");	//把字符串转为了数字。
+		System.out.println(i3+34);
+		
+		String str = 567+"";	//数字转为字符型。
+		System.out.println(str);
+	}
+}
+
+
+
+Console:
+2147483647
+3e8
+333
+379
+567
