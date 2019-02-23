@@ -1,5 +1,9 @@
 package cn.bjsxt.test;
-
+/**
+ * 测试包装类的基本用法
+ * @author zam
+ *
+ */
 public class Test01 {
 	public static void main(String[] args) {
 		Integer i = new Integer(1000);	//把1000包装成一个对象
