@@ -1,0 +1,28 @@
+package cn.bjsxt.test;
+/**
+ * 测试自动装箱、拆箱。
+ * @author zam
+ *
+ */
+public class Test02 {
+	public static void main(String[] args) {
+		Integer i = 1000;	//Jdk5.0之前，左边是引用类型，右边是数字，是不对的。	JDK5.0之后自动装箱，编译器帮我们改进代码
+							//自动装箱， 编译器改进：Integer i = new Integer(1000);
+		int c = new Integer(1500);	//编译器改进：int c = new Integer(1500).intValue();
+		Integer d = 2000;	
+		int b =d;	//自动拆箱，编译器改进：int b = d.intValue();
+					//若Integer d = null;会报错，对象为空，而编译器自动调了对象的方法	
+		System.out.println(b);
+		
+		Integer e =1234;
+		Integer e2 =1234;
+		System.out.println(e==e2);	//内容属性相同，但不是同一个对象
+		System.out.println(e.equals(e2));
+		
+		System.out.println("##################");
+		Integer e3 =-128;	//缓存问题，[-128，127]之间的数仍会当作基本数据类型处理。		为了提高效率，基本数据类型比对象快
+		Integer e4 =-128;
+		System.out.println(e4==e3);	//内容属性相同，但不是同一个对象
+		System.out.println(e3.equals(e4));
+	}
+}
