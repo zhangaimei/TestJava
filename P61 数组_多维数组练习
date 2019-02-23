@@ -1,0 +1,48 @@
+package cn.bjsxt.Array2;
+/**
+ * 封装了矩阵常用的方法
+ * @author zam
+ *
+ */
+public class Matrix {
+	
+	//封装矩阵的加法
+	public static int[][] add(int[][] a,int[][] b) {
+		int[][] c =new int[a.length][b.length];
+		for(int i=0;i<c.length;i++) {
+			for(int j=0;j<c.length;j++) {
+				c[i][j] = a[i][j] +b[i][j];
+			}
+		}
+		return c;
+	}
+	
+	//封装打印矩阵
+	public static void print(int[][] c) {
+		for(int i=0;i<c.length;i++) {
+			for(int j=0;j<c.length;j++) {
+				System.out.print(c[i][j]+"\t");
+			}
+			System.out.println();
+		}
+	}
+	
+	public static void main(String[] args) {
+		int[][] a = {
+				{1,3},
+				{2,4}
+		};
+		int[][] b = {
+				{3,4},
+				{5,6}
+		};
+		int[][] c = add(a,b);
+		print(c);
+	}
+}
+
+
+
+Console:
+4	7	
+7	10	
