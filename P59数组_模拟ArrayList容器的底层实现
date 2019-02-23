@@ -1,0 +1,115 @@
+package cn.bjsxt.myCollection;
+
+import java.util.ArrayList;
+/**
+ * 模拟实现JDK中提供的ArrayList类
+ * @author zam
+ * 
+ */
+public class MyArrayList {
+    private Object[] value;	//The value is used for Object storage.
+    private int size;	//The size is the number of Object used.
+    
+	public int size() {	//封装size以后，暴露一个方法，可以看到size是几。
+		return size;
+	}
+	public boolean isEmpty() {	//判断容器是否为空
+		return size ==0;
+	}
+  
+	//搞定初始化
+    public MyArrayList() {	//构建MyArrayList方法；value = new Object[16];
+    	//value = new Object[16];	
+    	this(10);	//这个构造器调另一个构造器MyArrayList(int size)。
+    }
+    
+    public MyArrayList(int size) {	//重载MyArrayList,形参中输入size
+    	if(size<0) {
+    		try {
+    			throw new Exception();	//手动抛出一个异常。讲到异常章节再说，先混个眼熟
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}
+    	}
+    	value = new Object[size];	//创建[0,size-1]的数组对象。
+    }
+
+    //放进容器，给容器里丢东西
+    public void add(Object obj) {	
+    	value[size] = obj;	//第一次时size是0.然后不断往容器里加
+    	size++;
+    	//装不下了，扩容吧。
+    	if(size>=value.length) {	//size:具体放到第几个了，value.length初始=16
+    		int newCapacity = value.length*2;
+    		Object[] newList = new Object[newCapacity];
+    			//System.arraycopy(src,srcPos,dest,destPos,length);
+    			for(int i=0;i<value.length;i++) {	//将已装进容器的东西复制过去
+    				newList[i] = value[i];
+    			}
+    		value = newList;	///长度不同的数组也可以赋值
+    	}
+    }
+    
+  //从数组中取出来，不是删除。
+    public Object get(int index) {	//返回Object。传一个索引进来，按索引取	
+    	rangeCheck(index);
+    	return value[index];	//取出来的
+    }
+
+    //返回索引值。
+    public int indexOf(Object obj) {	
+    	if(obj==null) {
+    		return -1;	//对象为空，返回-1
+    	}else {
+    		for(int i=0;i<value.length;i++) {
+    			if(obj==value[i]) {
+    				return i;	//返回i，即它的索引.遇到return便全部结束。 
+    			}
+    		}
+    		return -1;
+    	}
+    }
+    public int lastIndexOf(Object obj) {	//倒着遍历
+    	if(obj==null) {
+    		return -1;	//对象为空，返回-1
+    	}else {
+    		for(int i=value.length-1;i>=0;i--) {
+    			if(obj==value[i]) {
+    				return i;	//返回i，即它的索引
+    			}
+    		}
+    		return -1;
+    	}
+    }
+    
+    public Object set(int index, Object obj) {
+        rangeCheck(index);
+        Object oldValue = value[index];	//保存一下老对象。
+        value[index] = obj;
+        return oldValue;
+    }
+    
+    public void rangeCheck(int index) {
+    	if(index<0||index>size-1) {	//如果输入的索引号不在[0,size-1]内，抛出异常，程序停下来
+    		try {
+    			throw new Exception();	//手动抛出异常
+    		}catch(Exception e) {
+    			e.printStackTrace();
+    		}
+    	}
+    }
+
+	public static void main(String[] args) {
+    	MyArrayList list = new MyArrayList(2);	//调的是MyArrayList(int size)方法。new2个长度的数组
+    	list.add("a");
+    	list.add(new Human("张爱梅"));
+    	list.add("bbbb");
+    	list.add("cccc");
+    	list.add("ddddd");
+    	list.add("bbbb");
+    	
+    	System.out.println(list.size());
+    	Human h = (Human)list.get(1);	//强制转型：将返回的Object类转为Human。
+    	System.out.println(h.getName());
+    }
+}
