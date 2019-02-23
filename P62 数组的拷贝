@@ -1,0 +1,41 @@
+package cn.bjsxt.Array2;
+
+import java.util.Arrays;
+
+public class TestArrary {
+	public static void main(String[] args) {
+		int[] a = {13,74,2,209,67,32};
+		Arrays.sort(a);	//使用二分法查找，必须先对数组进行排序。
+		
+		//增强的for循环
+		for(int i: a) {	//i:临时变量；a:数组
+			System.out.println(i);
+		}
+		/*相当于：
+		for(int j=0;j<a.length;j++) {
+			i=a[j];
+			System.out.println(a[j]);
+		}
+		*/
+		System.out.println(Arrays.toString(a));	//数组打印可以遍历或用toString()打印：返回指定数组内容的字符串表示形式。
+		//此toString与Object中的toString有什么关系？
+		//可以自定义排序时比较的内容，具体在容器里再说。
+		
+		System.out.println("该元素的索引："+Arrays.binarySearch(a, 67));	//67在a中的索引。输出若<0，则表示不在a内
+		System.out.println(args[0]);
+	}
+
+}
+
+
+
+Console:
+2
+13
+32
+67
+74
+209
+[2, 13, 32, 67, 74, 209]
+该元素的索引：3
+aaa
