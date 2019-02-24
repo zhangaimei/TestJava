@@ -1,0 +1,29 @@
+package cn.bjsxt.test;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+public class TestCalender {
+	public static void main(String[] args) {
+		Calendar c =new GregorianCalendar();
+		//c.set(1996, 9, 3, 19, 36);	//'9'也可以换成Calender.OCTOBOR
+		c.set(Calendar.YEAR, 1996);
+		c.set(Calendar.MONDAY,9);
+		c.set(Calendar.DATE, 3);	//未设置时显示的时、分、秒为当前时分秒
+		//c.setTime(new Date());	//此时的c为当前日期
+		Date d = c.getTime();
+		System.out.println(d);
+		
+		//测试日期计算
+		c.add(Calendar.YEAR, 23);
+		Date d1 = c.getTime();
+		System.out.println(d1);
+	}
+}
+
+
+
+Console:
+Thu Oct 03 17:21:42 CST 1996
+Thu Oct 03 17:21:42 CST 2019
