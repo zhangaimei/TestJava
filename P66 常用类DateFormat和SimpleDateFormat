@@ -1,0 +1,32 @@
+package cn.bjsxt.test;
+
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+public class TestDateFormat {
+	public static void main(String[] args) {
+		DateFormat df = new SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss,属于本年的第w周");//或者是"yyyy-MM-dd"
+															//是一个抽象类，不能自己建类。建它的子类
+		Date d = new Date(123213123L);
+		String str = df.format(d);	//将时间对象按照格式化转化成字符串。
+		System.out.println(str);
+		System.out.println("###############");
+		
+		String str2 = "1996,9,3";
+		DateFormat df2 = new SimpleDateFormat("yyyy,MM,dd");
+		try {
+			Date d2 = df2.parse(str2);	//将字符串按照格式化转化成时间对象。
+			System.out.println(d2);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+
+Console:
+1970年01月02日 06:13:33,属于本年的第1周
+###############
+Tue Sep 03 00:00:00 CST 1996
