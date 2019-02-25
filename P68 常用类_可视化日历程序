@@ -14,11 +14,10 @@ import java.util.GregorianCalendar;
  */
 public class VisualCalendar {
 	public static void main(String[] args) {
-		String temp ="2019-2-25";
+		String temp ="2019-3-25";
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");	//特别注意！dd是小写！不能错！
 		try {
 			Date date = format.parse(temp);
-      
 			Calendar calendar = new GregorianCalendar();
 			calendar.setTime(date);  //把时间输进去,返回值是void	
 			calendar.set(Calendar.DATE, 1);
@@ -26,12 +25,28 @@ public class VisualCalendar {
 			System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
 			System.out.println(calendar.getActualMaximum(Calendar.DATE));
 			
+			int n = calendar.get(Calendar.DAY_OF_WEEK);
+			int m = calendar.getActualMaximum(Calendar.DATE);
 			System.out.println("日\t一\t二\t三\t四\t五\t六");
-			System.out.println("\t\t\t\t\t1\t2");
-			for(int i=2;i<=31;) {
+			
+			int k =1;
+			while(k<n) {
+				System.out.print("\t");
+				k=k+1;
+			}
+			int t=1;
+			while(k>=n&&k<=7) {
+				System.out.print(t+"\t");
+				t=t+1;
+				k=k+1;
+			}
+			System.out.println();
+			
+			t=t-1;
+			for(int i=t;i<=m;) {
 				for(int j=1;j<=7;j++) {
 					int ij = i+j;
-					if(ij<=31)
+					if(ij<=m)
 					System.out.print(ij+"\t");
 				}
 				System.out.println();
@@ -46,11 +61,12 @@ public class VisualCalendar {
 
 
 
+
 Console:
 6
-28
+31
 日	一	二	三	四	五	六
-					1	2
+					1	2	
 3	4	5	6	7	8	9	
 10	11	12	13	14	15	16	
 17	18	19	20	21	22	23	
