@@ -1,0 +1,60 @@
+package cn.bjsxt.test;
+
+import java.io.File;
+import java.io.IOException;
+
+public class TestFile {
+	public static void main(String[] args) {
+		File f1 =new File("E:\\JDK\\Mycode\\8");	//指向路径
+		File f2 = new File("E:\\JDK\\Mycode\\8\\TestFloatType.java");	//指向文件
+		File f3 = new File(f1,"TestFloatType.class");	//指向f2中的TestFloatType.class文件
+		if(f2.isFile()) {
+			System.out.println("是一个文件。");
+		}
+		if(f1.isDirectory()) {
+			System.out.println("是一个路径。");
+		}
+		
+		//创建、删除文件
+		File f4 = new File(f1,"Test666.java");
+		try {
+			f4.createNewFile();	//创建新文件。
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		f4.delete();	//删除文件
+		
+		//创建、删除目录
+		File f5 = new File("E:\\JDK\\Mycode\\8\\aa\\dd\\cc");
+		f5.mkdirs();	//创建复目录.  fs.mkdir();是创建单目录。	
+		printFile(f1,0);	//打印目录
+	}
+	
+	//这是一个递归结构，头！递归体！
+	private static void printFile(File f, int level) {
+		for(int i = 0;i<level;i++) {
+			System.out.print("—\t");
+		}
+		System.out.println(f.getName());
+		
+		if(f.isDirectory()) {
+			File[] files = f.listFiles();	//把所有子文件目录列出来，放在数组里
+			for(File temp:files) {	//增长for循环。	temp=files[j]相当于for（j=0;j<files.length;j++）,
+									//遍历数组files[]里的所有内容。
+				printFile(temp,level+1);
+			}
+		}
+	}
+}
+
+
+
+Console:
+是一个文件。
+是一个路径。
+8
+—	aa
+—	—	dd
+—	—	—	cc
+—	TestFloatType.class
+—	TestFloatType.java
