@@ -1,0 +1,86 @@
+package cn.bjsxt.testException01;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class TestReadFile01 {
+	public static void main(String[] args) {
+		FileReader reader =null;
+		try {
+			
+			reader = new FileReader("E:\\JDK\\Mycode\\8\\a.txt");
+			char c =(char)reader.read();
+			char c2 = (char)reader.read();
+			System.out.println(""+c+c2);
+			}catch (FileNotFoundException e) {  //先遇到父类会直接处理掉，所以一般子类放前面，父类放后面。
+				e.printStackTrace();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					
+					if(reader != null)
+					reader.close();		//关闭资源。
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+	}
+}
+
+
+
+Console:
+ab
+
+
+package cn.bjsxt.testException01;
+/**
+ * 测试try-catch的执行顺序
+ */
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public class TestReadFile {
+	public static void main(String[] args) {
+		String str = null;
+		try {
+			str = new TestReadFile().openFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(str);
+	}
+	String openFile() throws IOException {
+		try {
+			System.out.println("aaa");
+			FileInputStream fls = new FileInputStream("E:\\JDK\\Mycode\\8\\ab.txt");////遇到问题：执行catch。
+			int a = fls.read();
+			System.out.println("bbb");
+			return "step1";
+		}catch(FileNotFoundException e) {
+			System.out.println("catching!!!");
+			e.printStackTrace();
+			return "step2";	//先确定返回的值，并不会直接结束运行！
+		}catch(IOException e) {
+			e.printStackTrace();
+			return "step3";
+		}finally {
+			System.out.println("finally!!!");
+			//return "fff";	//不要在finally中使用return！会覆盖try/catch中的return
+		}
+	}
+}
+
+
+
+Console:
+aaa
+catching!!!
+
+finally!!!
+step2
+
