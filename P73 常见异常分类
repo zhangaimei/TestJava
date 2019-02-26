@@ -1,0 +1,28 @@
+package cn.bjsxt.testException01;
+
+public class TestException {
+	public static void main(String[] args) {
+		
+		//int a = 1/0;	//ArithmeticException(运算异常)  uncheaked (这样的异常太频繁了)
+		
+		try {
+			Thread.sleep(3000);		//这是cheaked Exception（被编译器检查过的）JRE会自动做处理
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		Computer c =null;	//栈里c的地址为空，空指向。
+		if(c !=null)
+		c.strart();  //NullPointerException（空指针异常） 对象是null，调用了对象的方法或属性。
+		
+		String str = "123abc";
+		Integer i = new Integer(str);	//把字符串转为数字。NumberFormatException(数字格式异常) 
+		System.out.println(i);	
+		
+	}
+}
+class Computer{
+	void strart() {
+		System.out.println("计算机启动！");
+	}
+}
