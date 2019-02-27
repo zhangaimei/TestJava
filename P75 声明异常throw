@@ -1,0 +1,67 @@
+package cn.bjsxt.testException01;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.ParseException;
+
+public class TestReadFile03 {
+	public static void main(String[] args) {	
+		
+		/**
+		 * 测试声明异常：throws子句
+		 */
+		 /*main方法中的异常也可以throws扔出去给GRE
+		String str = null;
+		try {
+			str = new TestReadFile03().openFile();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(str);
+	}
+	String openFile() throws FileNotFoundException,IOException {	//谁调谁处理异常
+		FileReader reader = new FileReader("E:\\JDK\\Mycode\\8\\ab.txt");
+		char c = (char)reader.read();
+		System.out.println(c);
+		return ""+c;
+		*/
+		
+		/**
+		 * 测试自动抛出异常(注意不是throws,用得极少)自己也可以new,然后抛出去。
+		 */
+		File f = new File("E:\\JDK\\Mycode\\8\\ab.txt");
+		if(!f.exists()) {
+			try {
+				throw new FileNotFoundException("File can't be found!");	//自己new一个，归根结底也是对象。new完以后自己选择try-catch
+			}catch(FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * 测试子类声明异常范围
+	 * @author zam
+	 *
+	 */
+class A{
+	public void method() throws IOException{}
+	}
+class B extends A{		public void method() throws FileNotFoundException{}
+}
+class C extends A{		public void method(){}
+}
+//class D extends A{		public void method() throws Exception{}}	//	错！Exception是父类
+class E extends A{		public void method() throws IOException,FileNotFoundException{}
+}
+class F extends A{		public void method() throws IOException,ArithmeticException{}
+}	//？？？IOException也是Exception的子类。ArithmeticException是RuntimeException的子类，RuntimeException是Exception的子类。
+//class G extends A{		public void method() throws IOException,ParseException{}}	//ParseException是Exception的子类。IOException也是Exception的子类。
+}
+
+
+
