@@ -1,0 +1,90 @@
+package cn.bjsxt.test;
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+
+/**
+ * 游戏开发中常用的工具类（比如：加载图片等方法）
+ * @author zam
+ *
+ */
+public class GameUtil {
+	
+	private GameUtil() {};	//工具类通常将构造方法私有，只需要掉它的static方法就行了
+	
+	public static Image getImage(String path) {
+		URL u = GameUtil.class.getClassLoader().getResource(path);
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(u);	//u是路径
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return img;	//BufferedImage是Image的子类，所以返回值为BufferedImage类也正确
+	}
+}
+
+
+
+package cn.bjsxt.test;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+/**
+ * 游戏窗口类
+ * @author zam
+ *
+ */
+public class GameFrame extends Frame{	//GUI编程：AWT,swing等 
+	
+	//加载窗口 
+	public void lunchFrame() {	//设置长、宽、位置
+		setSize(500,500);
+		setLocation(100, 100);
+		setVisible(true);  //窗口默认是不可见的。
+		
+		//关闭窗口
+		addWindowListener(new WindowAdapter() {	//添加监听器
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);	//遇到异常传负数，正常结束传0就可以。
+			}	
+		});
+	}
+	
+	//窗户上面画东西
+	Image img = GameUtil.getImage("images/1.jpg");	//加载图片。传的时候路径从包开始。
+	@Override
+	public void paint(Graphics g) {	//窗户上面画东西是以窗口的左上角为坐标原点。g相当于传的画笔
+		g.drawLine(100, 100, 200, 200);	//画直线
+		g.drawRect(100, 100, 200, 200);	//画矩形
+		g.drawOval(100,100, 200, 200);	//此圆是矩形的内切圆。
+		Font f =new Font("宋体",Font.BOLD,100);	//设置字体大小
+		g.setFont(f);	
+		g.drawString("我是张爱梅", 200, 200);	//在窗口中写字符串 
+		
+		g.fillRect(100, 100, 20, 40);	//填充了的矩形
+		Color c =g.getColor();	//保存原来的颜色。
+		g.setColor(Color.RED);
+		g.fillOval(300, 300, 30, 30);
+		g.setColor(c);  //还原原来的颜色
+		
+		g.drawImage(img, 200, 200, 200, 200, null);	//画图片
+	}
+
+	public static void main(String[] args) {
+		GameFrame gf = new GameFrame();
+		gf.lunchFrame();
+	}
+}
