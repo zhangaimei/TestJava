@@ -79,7 +79,8 @@ public class Planet extends Star{
 				degree +=speed;
 	}
 	public Planet(String imgpath,double longAxis,double shortAxis,double speed,Star center) {
-		super(GameUtil.getImage(imgpath));
+	
+		super(GameUtil.getImage(imgpath));	//调用父类构造器 Star(Image img)
 		
 		this.center = center;
 		this.x = center.x +center.width/2+longAxis;	//长轴就是一半的距离
