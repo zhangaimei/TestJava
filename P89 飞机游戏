@@ -1,0 +1,54 @@
+package cn.bjsxt.plane;
+
+import java.awt.Graphics;
+import java.awt.Image;
+
+import cn.bjsxt.util.GameUtil;
+import cn.bjsxt.util.MyFrame;
+
+public class PlaneGameFrame extends MyFrame{
+	Image bg = GameUtil.getImage("images/bg.jpg");
+	
+	Plane p = new Plane("images/plane.png",50,50);
+	
+	public void paint(Graphics g) {
+		g.drawImage(bg, 0, 0, null);
+		p.draw(g);
+		
+	}
+	
+	public static void main(String[] args) {
+		new PlaneGameFrame().launchFrame();
+		PlaneGameFrame pgf =new PlaneGameFrame();
+		
+	}
+}
+
+
+
+
+package cn.bjsxt.plane;
+
+import java.awt.Graphics;
+import java.awt.Image;
+
+import cn.bjsxt.util.GameUtil;
+
+public class Plane {
+	Image img; 
+	double x,y;
+	
+	public void draw(Graphics g) {
+		g.drawImage(img, 50, 50, 50, 50, null);
+	}
+
+	public Plane(String imgpath, double x, double y) {
+		super();
+		this.img = GameUtil.getImage(imgpath);
+		this.x = x;
+		this.y = y;
+	}
+	public Plane() {	//空构造器也建议加一下。
+	}
+}
+
