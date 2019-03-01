@@ -2,6 +2,8 @@ package cn.bjsxt.plane;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import cn.bjsxt.util.GameUtil;
 import cn.bjsxt.util.MyFrame;
@@ -19,11 +21,30 @@ public class PlaneGameFrame extends MyFrame{
 	
 	public static void main(String[] args) {
 		new PlaneGameFrame().launchFrame();
-		PlaneGameFrame pgf =new PlaneGameFrame();
 		
 	}
-}
+	
+	public void launchFrame() {	//重写父类的launchFrame方法
+		super.launchFrame(); //比起全部复制粘贴，直接调父类方法更好。
+		//增加键盘的监听
+		addKeyListener(new KeyMonitor());
+	}
+	
+	//定义为内部类，可以方便地使用外部类的普通属性
+	class KeyMonitor extends KeyAdapter{	
+		@Override
+		public void keyPressed(KeyEvent e) {
+			System.out.println("按下："+e.getKeyCode());	//键盘里每个键对应一个值。
+			p.move(e);
+		}
+		@Override
+		public void keyReleased(KeyEvent e) {
+			System.out.println("释放："+e.getKeyCode());
+		}
+		
+	}
 
+}
 
 
 
@@ -31,6 +52,7 @@ package cn.bjsxt.plane;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 
 import cn.bjsxt.util.GameUtil;
 
@@ -39,8 +61,28 @@ public class Plane {
 	double x,y;
 	
 	public void draw(Graphics g) {
-		g.drawImage(img, 50, 50, 50, 50, null);
+		g.drawImage(img, (int)x, (int)y, 50, 50, null);
 	}
+	
+	public void move(KeyEvent e) {
+		switch(e.getKeyCode()){
+		case 37:
+			x -= 10;
+			break;
+		case 38:
+			y -=10;
+			break;
+		case 39:
+			x +=10;
+			break;
+		case 40:
+			y +=10;
+			break;
+		default:
+			break;
+		}
+	}
+	
 
 	public Plane(String imgpath, double x, double y) {
 		super();
@@ -51,4 +93,3 @@ public class Plane {
 	public Plane() {	//空构造器也建议加一下。
 	}
 }
-
