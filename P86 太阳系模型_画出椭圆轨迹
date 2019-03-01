@@ -1,0 +1,59 @@
+package cn.bjsxt.solar;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import cn.bjsxt.util.GameUtil;
+
+public class Planet extends Star{
+	
+	//除了图片，坐标。行星沿着某个椭圆运行：长轴、短轴、速度。绕着某个Star飞
+	double longAxis;	//椭圆的长轴
+	double shortAxis;	//椭圆的短轴
+	double speed;	//飞行的速度
+	double degree;	//角度
+	Star center;
+	
+	public void draw(Graphics g) {	
+		super.draw(g);
+		drawTrace(g);
+		move();
+	}
+	public void drawTrace(Graphics g) {	
+		int _x = (int) (center.x+center.width/2-longAxis);
+		int _y = (int) (center.y+center.height/2 -shortAxis);
+		int _width = (int) (longAxis*2);
+		int _height = (int) (shortAxis*2);
+		
+		Color c = g.getColor();
+		g.setColor(Color.blue);
+		g.drawOval(_x, _y, _width, _height);
+		g.setColor(c);
+	}
+	public void move() {
+		//椭圆轨迹飞行轨迹 
+				x = center.x+center.width/2+longAxis*Math.cos(degree);
+				y = center.y+center.height/2+shortAxis*Math.sin(degree);
+				degree +=speed;
+	}
+	public Planet(String imgpath,double longAxis,double shortAxis,double speed,Star center) {
+		super(GameUtil.getImage(imgpath));
+		
+		this.center = center;
+		this.x = center.x +center.width/2+longAxis;	//长轴就是一半的距离
+		this.y = center.y+center.height/2 +shortAxis;
+		
+		this.longAxis = longAxis;
+		this.shortAxis = shortAxis;
+		this.speed = speed; 
+	}
+	
+	public Planet(Image image, double x, double y,int width,int height) {
+		super(image, x, y);
+		// TODO Auto-generated constructor stub
+	}
+	public Planet(String imgpath, double x, double y,int width,int height) {
+		super(imgpath, x, y);
+	}
+}
