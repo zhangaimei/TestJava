@@ -1,0 +1,106 @@
+package cn.bjsxt.solar;
+
+import java.awt.Graphics;
+import java.awt.Image;
+
+import cn.bjsxt.util.Constant;
+import cn.bjsxt.util.GameUtil;
+import cn.bjsxt.util.MyFrame;
+
+/**
+ * 太阳系的主窗口
+ * @author zam
+ *
+ */
+public class SolarFrame extends MyFrame{
+	Image bj = GameUtil.getImage("images/background.jpg");
+	Star sun = new Star("images/sun.png",Constant.GAME_HEIGHT/2,Constant.GAME_HEIGHT/2);	//这样太阳就创建出来了
+	Planet earth =new Planet("images/earth1.png", 150, 100, 0.1, sun);
+	Planet moon =new Planet("images/moon.png", 50, 30, 0.2, earth,true);
+	Planet Mars =new Planet("images/Mars.png", 250, 170, 0.2, sun);
+	Planet Jupter =new Planet("images/Mars.png", 350, 250, 0.3, sun);
+		public void paint(Graphics g) {
+		g.drawImage(bj, 0, 0, 1000, 800, null);
+		sun.draw(g);	//把笔传进去画太阳
+		earth.draw(g);
+		moon.draw(g);
+		Mars.draw(g);
+		Jupter.draw(g);
+	} 
+	
+	public static void main(String[] args) {
+		SolarFrame sf = new SolarFrame();
+		sf.launchFrame();
+	}
+}
+
+
+
+package cn.bjsxt.solar;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import cn.bjsxt.util.GameUtil;
+
+public class Planet extends Star{
+	
+	//除了图片，坐标。行星沿着某个椭圆运行：长轴、短轴、速度。绕着某个Star飞
+	double longAxis;	//椭圆的长轴
+	double shortAxis;	//椭圆的短轴
+	double speed;	//飞行的速度
+	double degree;	//角度
+	Star center;
+	
+	boolean satellite;
+	
+	public void draw(Graphics g) {	
+		super.draw(g);
+		move();
+		if(satellite!=true)
+			drawTrace(g);
+	}
+	public void drawTrace(Graphics g) {	
+		int _x = (int) (center.x+center.width/2-longAxis);
+		int _y = (int) (center.y+center.height/2 -shortAxis);
+		int _width = (int) (longAxis*2);
+		int _height = (int) (shortAxis*2);
+		
+		Color c = g.getColor();
+		g.setColor(Color.blue);
+		g.drawOval(_x, _y, _width, _height);
+		g.setColor(c);
+	}
+	public void move() {
+		//椭圆轨迹飞行轨迹 
+				x = center.x+center.width/2+longAxis*Math.cos(degree);
+				y = center.y+center.height/2+shortAxis*Math.sin(degree);
+				degree +=speed;
+	}
+	public Planet(String imgpath,double longAxis,double shortAxis,double speed,Star center) {
+		super(GameUtil.getImage(imgpath));
+		
+		this.center = center;
+		this.x = center.x +center.width/2+longAxis;	//长轴就是一半的距离
+		this.y = center.y+center.height/2 +shortAxis;
+		
+		this.longAxis = longAxis;
+		this.shortAxis = shortAxis;
+		this.speed = speed; 
+	}
+	
+	public Planet(String imgpath,double longAxis,double shortAxis,double speed,Star center,boolean satellite) {
+		this(imgpath,longAxis,shortAxis,speed,center);
+		this.satellite = satellite;
+	}
+	
+	public Planet(Image image, double x, double y,int width,int height) {
+		super(image, x, y);
+		// TODO Auto-generated constructor stub
+	}
+	public Planet(String imgpath, double x, double y,int width,int height) {
+		super(imgpath, x, y);
+	}
+}
+
