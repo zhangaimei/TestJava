@@ -1,0 +1,145 @@
+package cn.bjsxt.solar;
+
+import java.awt.Graphics;
+import java.awt.Image;
+
+import cn.bjsxt.util.Constant;
+import cn.bjsxt.util.GameUtil;
+import cn.bjsxt.util.MyFrame;
+/**
+ * 太阳系的主窗口
+ * @author zam
+ *
+ */
+public class SolarFrame extends MyFrame{
+	Image bj = GameUtil.getImage("images/background.jpg");
+	Star s = new Star("images/sun.png",Constant.GAME_HEIGHT/2,Constant.GAME_HEIGHT/2);	//这样太阳就创建出来了
+	
+	public void paint(Graphics g) {
+		g.drawImage(bj, 0, 0, null);
+		s.draw(g);	//把笔传进去画太阳
+	} 
+	
+	public static void main(String[] args) {
+		SolarFrame sf = new SolarFrame();
+		sf.launchFrame();
+	}
+}
+
+
+
+package cn.bjsxt.solar;
+
+import java.awt.Graphics;
+import java.awt.Image;
+
+import cn.bjsxt.util.GameUtil;
+
+public class Star {
+	Image img;	//有图片
+	double x,y;	//有坐标
+	
+	public void draw(Graphics g) {
+		g.drawImage(img, (int)x,(int)y, null);
+	}
+	
+	public Star(Image image,double x,double y) {	//重载构造器，输入图片信息
+		this.img = img;
+		this.x = x;
+		this.y = y;
+	}
+	
+	public Star(String imgpath,double x,double y) {	//重载，这样只需要传路径就可以了
+		this.img = GameUtil.getImage(imgpath);
+		this.x =x;
+		this.y = y;
+	}
+}
+
+
+
+package cn.bjsxt.util;
+/**
+ * 游戏项目中用到的常量
+ * @author zam
+ *
+ */
+public class Constant {
+	public static final int GAME_WIDTH =800;
+	public static final int GAME_HEIGHT =600;
+
+}
+
+
+
+package cn.bjsxt.util;
+
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+
+/**
+ * 游戏开发中常用的工具类（比如：加载图片等方法）
+ * @author zam
+ *
+ */
+public class GameUtil {
+	
+	private GameUtil() {};	//工具类通常将构造方法私有，只需要掉它的static方法就行了
+	
+	public static Image getImage(String path) {
+		return Toolkit.getDefaultToolkit().getImage(GameUtil.class.getClassLoader().getResource(path));	//BufferedImage是Image的子类，所以返回值为BufferedImage类也正确
+	}
+}
+
+
+
+ package cn.bjsxt.util;
+
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+public class MyFrame extends Frame {
+	
+	/**
+	 * 加载窗口 
+	 */
+	public void launchFrame() {	
+		setSize(Constant.GAME_WIDTH, Constant.GAME_HEIGHT);
+		setLocation(100, 100);
+		setVisible(true);  //窗口默认是不可见的。
+		
+		new PaintThread().start();//启动重画线程
+		//关闭窗口
+		addWindowListener(new WindowAdapter() {	//添加监听器
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);	//遇到异常传负数，正常结束传0就可以。
+			}	
+		});
+	}
+	/**
+	 * 定义一个重画窗口的线程类实现动画，是一个内部类
+	 * @author zam
+	 *
+	 */
+	class PaintThread extends Thread{	//线程里的内部类
+		public void run() {
+			while(true) {	//死循环
+				repaint();	//重画窗口
+				try {
+					Thread.sleep(50);	 //让CPU休息
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} 
+			}
+		}
+	}
+
+}
+
