@@ -1,0 +1,117 @@
+package cn.bjsxt.test;
+/**
+ * 游戏项目中用到的常量
+ * @author zam
+ *
+ */
+public class Constant {
+	public static final int GAME_WIDTH =500;
+	public static final int GAME_HEIGHT =500;
+
+}
+
+
+
+ package cn.bjsxt.test;
+
+
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+
+
+public class MyFrame extends Frame {
+	/**
+	 * 加载窗口 
+	 */
+	public void lunchFrame() {	//设置长、宽、位置
+		setSize(Constant.GAME_WIDTH,Constant.GAME_HEIGHT);
+		setLocation(100, 100);
+		setVisible(true);  //窗口默认是不可见的。
+		
+		new PaintThread().start();//启动重画线程
+		//关闭窗口
+		addWindowListener(new WindowAdapter() {	//添加监听器
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);	//遇到异常传负数，正常结束传0就可以。
+			}	
+		});
+	}
+	/**
+	 * 定义一个重画窗口的线程类实现动画，是一个内部类
+	 * @author zam
+	 *
+	 */
+	class PaintThread extends Thread{	//线程里的内部类
+		public void run() {
+			while(true) {	//死循环
+				repaint();	//重画窗口
+				try {
+					Thread.sleep(50);	 //让CPU休息
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} 
+			}
+		}
+	}
+
+}
+
+
+
+
+package cn.bjsxt.test;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+/**
+ * 测试窗口物体沿着任意角度飞行
+ * 最后，实现一个小的台球游戏
+ * @author zam
+ *
+ */
+public class GameFrame4 extends MyFrame{	//GUI编程：AWT,swing等 
+
+	/***
+	 * 窗户上面画东西
+	 */
+	Image img = GameUtil.getImage("images/1.jpg");	//加载图片。传的时候路径从包开始。
+	private double x=100,y=100;
+	private double degree=3.14/3;	//[0,2pi],3.14=pi,即180°。
+	private double speed = 10;
+	@Override
+	public void paint(Graphics g) {	
+		g.drawImage(img, (int)x, (int)y, 60, 60, null);	//画图片
+		
+		if(speed>0) {	//让它停下
+			speed-=0.06;
+		}else {
+			speed =0;
+		}
+		
+		x +=speed*Math.cos(degree);
+		y +=speed*Math.sin(degree);
+		
+		if(y>500-60||y<30) {
+			degree = -degree;
+		}
+		if(x<0||x>500-60) {
+			degree =Math.PI-degree;
+		}
+	}
+	
+
+	public static void main(String[] args) {
+		GameFrame4 gf = new GameFrame4();
+		gf.lunchFrame();
+	}
+}
+
