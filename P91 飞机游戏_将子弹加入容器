@@ -1,6 +1,7 @@
 package cn.bjsxt.plane;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
@@ -27,12 +28,24 @@ public class PlaneGameFrame extends MyFrame{
 			//检测跟飞机的碰撞。
 			boolean peng = b.getRect().intersects(p.getRect());
 			if(peng) {
-				System.out.println("#########peng!!");
+				p.setLive(false);
 			}
-			
+			if(p.isLive()==false) {
+				printInfo(g,"GAME OVER",70);
+			}
 		}
 	}  
-	
+	/**
+	 * 在窗口上打印信息
+	 */
+	public void printInfo(Graphics g,String str,int size) {
+		Color c = g.getColor();
+		g.setColor(Color.WHITE);
+		Font f = new Font("宋体",Font.BOLD,size);
+		g.setFont(f);
+		g.drawString(str, (int)p.x, (int)p.y);
+		g.setColor(c);
+	}
 	public static void main(String[] args) {
 		new PlaneGameFrame().launchFrame();
 	}
@@ -53,17 +66,16 @@ public class PlaneGameFrame extends MyFrame{
 	class KeyMonitor extends KeyAdapter{	
 		@Override
 		public void keyPressed(KeyEvent e) {
-			System.out.println("按下："+e.getKeyCode());	//键盘里每个键对应一个值。
+			//System.out.println("按下："+e.getKeyCode());	键盘里每个键对应一个值。
 			p.addDirection(e);
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
-			System.out.println("释放："+e.getKeyCode());
+			//System.out.println("释放："+e.getKeyCode());
 			p.minusDirection(e);
 		}
 	}
 }
-
 
 
 package cn.bjsxt.plane;
