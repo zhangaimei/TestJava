@@ -16,12 +16,11 @@ public class PlaneGameFrame extends MyFrame{
 	public void paint(Graphics g) {
 		g.drawImage(bg, 0, 0, null);
 		p.draw(g);
-		
 	}
 	
 	public static void main(String[] args) {
 		new PlaneGameFrame().launchFrame();
-		
+
 	}
 	
 	public void launchFrame() {	//重写父类的launchFrame方法
@@ -35,16 +34,16 @@ public class PlaneGameFrame extends MyFrame{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			System.out.println("按下："+e.getKeyCode());	//键盘里每个键对应一个值。
-			p.move(e);
+			p.addDirection(e);
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
 			System.out.println("释放："+e.getKeyCode());
+			p.minusDirection(e);
 		}
-		
 	}
-
 }
+
 
 
 
@@ -59,24 +58,62 @@ import cn.bjsxt.util.GameUtil;
 public class Plane {
 	Image img; 
 	double x,y;
+	boolean left,right,up,down;
+	int speed =10;
 	
 	public void draw(Graphics g) {
 		g.drawImage(img, (int)x, (int)y, 50, 50, null);
+		move();
 	}
 	
-	public void move(KeyEvent e) {
+	public void move() {
+		
+		if(left) {
+			x-=10;
+		}
+		if(right) {
+			x+=10;
+		}
+		if(up) {
+			y-=10;
+		}
+		if(down) {
+			y+=10;
+		}
+	}
+	
+	public void addDirection(KeyEvent e) {
 		switch(e.getKeyCode()){
-		case 37:
-			x -= 10;
+		case KeyEvent.VK_LEFT:
+			left=true;
 			break;
-		case 38:
-			y -=10;
+		case KeyEvent.VK_UP:
+			up=true;
 			break;
-		case 39:
-			x +=10;
+		case KeyEvent.VK_RIGHT:
+			right=true;
 			break;
-		case 40:
-			y +=10;
+		case KeyEvent.VK_DOWN:
+			down=true;
+			break;
+		default:
+			break;
+		}
+	}
+	
+	public void minusDirection(KeyEvent e) {
+		switch(e.getKeyCode()){
+		case KeyEvent.VK_LEFT:
+			left=false;
+			break;
+		case KeyEvent.VK_UP:
+			up=false;
+			break;
+		case KeyEvent.VK_RIGHT:
+			right=false;
+			break;
+		case KeyEvent.VK_DOWN:
+			down=false;
 			break;
 		default:
 			break;
