@@ -7,25 +7,31 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import cn.bjsxt.util.Constant;
 import cn.bjsxt.util.GameUtil;
 import cn.bjsxt.util.MyFrame;
+
 
 public class PlaneGameFrame extends MyFrame{
 	Image bg = GameUtil.getImage("images/bg.jpg");
 	Plane p = new Plane("images/plane.png",50,50);
-	
 	ArrayList bulletList = new ArrayList();	//泛型暂时未学，暂不加。以后学了，强烈建议加上。可扩容数组,用来放子弹。
 	
 	public void paint(Graphics g) {
 		g.drawImage(bg, 0, 0, null);
 		p.draw(g);
-		
-		
 		for(int i=0;i<bulletList.size();i++) {	//便利一下
 			Bullet b = (Bullet) bulletList.get(i);
 			b.draw(g);
+			
+			//检测跟飞机的碰撞。
+			boolean peng = b.getRect().intersects(p.getRect());
+			if(peng) {
+				System.out.println("#########peng!!");
+			}
+			
 		}
-	}
+	}  
 	
 	public static void main(String[] args) {
 		new PlaneGameFrame().launchFrame();
@@ -60,28 +66,24 @@ public class PlaneGameFrame extends MyFrame{
 
 
 
-
 package cn.bjsxt.plane;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 import cn.bjsxt.util.GameUtil;
 
-public class Plane {
-	Image img; 
-	double x,y;
+public class Plane extends GameObject{
 	boolean left,right,up,down;
-	int speed =10;
-	
+
 	public void draw(Graphics g) {
 		g.drawImage(img, (int)x, (int)y, 50, 50, null);
 		move();
 	}
 	
 	public void move() {
-		
 		if(left) {
 			x-=10;
 		}
@@ -134,18 +136,18 @@ public class Plane {
 		}
 	}
 	
-
 	public Plane(String imgpath, double x, double y) {
-		super();
 		this.img = GameUtil.getImage(imgpath);
+		this.width= 50;
+		this.height= 50;
 		this.x = x;
 		this.y = y;
 	}
 	public Plane() {	//空构造器也建议加一下。
 	}
 }
-
-
+  
+  
 
  package cn.bjsxt.plane;
 
@@ -156,16 +158,15 @@ import java.awt.Image;
 import cn.bjsxt.util.Constant;
 import cn.bjsxt.util.GameUtil;
 
-public class Bullet {
-	double x,y;
-	int speed = 3;
+public class Bullet extends GameObject{
 	double degree;
-	Image img;
 	
 	public Bullet() {
 		degree = Math.random()*Math.PI*2;
 		x = Constant.GAME_WIDTH/2;
 		y = Constant.GAME_HEIGHT/2;
+		width = 30;
+		height = 30;
 		
 	}
 	
@@ -183,3 +184,35 @@ public class Bullet {
 		}
 	}
 }
+
+
+
+package cn.bjsxt.plane;
+
+import java.awt.Image;
+import java.awt.Rectangle;
+
+public class GameObject {
+	Image img; 
+	double x,y;
+	int speed =3;
+	int width,height;
+	
+	public Rectangle getRect() {	
+		return new Rectangle((int)x,(int)y,width,height);	//创建一个矩形对象
+	}
+
+	public GameObject(Image img, double x, double y, int speed, int width, int height) {
+		super();
+		this.img = img;
+		this.x = x;
+		this.y = y;
+		this.speed = speed;
+		this.width = width;
+		this.height = height;
+	}
+	
+	public GameObject() {
+	}
+}
+
