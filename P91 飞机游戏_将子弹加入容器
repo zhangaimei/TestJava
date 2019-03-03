@@ -1,32 +1,46 @@
 package cn.bjsxt.plane;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import cn.bjsxt.util.GameUtil;
 import cn.bjsxt.util.MyFrame;
 
 public class PlaneGameFrame extends MyFrame{
 	Image bg = GameUtil.getImage("images/bg.jpg");
-	
 	Plane p = new Plane("images/plane.png",50,50);
+	
+	ArrayList bulletList = new ArrayList();	//泛型暂时未学，暂不加。以后学了，强烈建议加上。可扩容数组,用来放子弹。
 	
 	public void paint(Graphics g) {
 		g.drawImage(bg, 0, 0, null);
 		p.draw(g);
+		
+		
+		for(int i=0;i<bulletList.size();i++) {	//便利一下
+			Bullet b = (Bullet) bulletList.get(i);
+			b.draw(g);
+		}
 	}
 	
 	public static void main(String[] args) {
 		new PlaneGameFrame().launchFrame();
-
 	}
 	
 	public void launchFrame() {	//重写父类的launchFrame方法
 		super.launchFrame(); //比起全部复制粘贴，直接调父类方法更好。
 		//增加键盘的监听
 		addKeyListener(new KeyMonitor());
+		
+		//生成一堆子弹
+		for(int i=0;i<50;i++) {
+			Bullet b = new Bullet();
+			bulletList.add(b);	//把它丢到容器里
+		}
 	}
 	
 	//定义为内部类，可以方便地使用外部类的普通属性
@@ -128,5 +142,44 @@ public class Plane {
 		this.y = y;
 	}
 	public Plane() {	//空构造器也建议加一下。
+	}
+}
+
+
+
+ package cn.bjsxt.plane;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import cn.bjsxt.util.Constant;
+import cn.bjsxt.util.GameUtil;
+
+public class Bullet {
+	double x,y;
+	int speed = 3;
+	double degree;
+	Image img;
+	
+	public Bullet() {
+		degree = Math.random()*Math.PI*2;
+		x = Constant.GAME_WIDTH/2;
+		y = Constant.GAME_HEIGHT/2;
+		
+	}
+	
+	public void draw(Graphics g) {
+		img =GameUtil.getImage("images/ball.png");
+		g.drawImage(img, (int)x, (int)y, null);
+		
+		x +=speed*Math.cos(degree);	//让子弹随着某个角度飞。
+		y +=speed*Math.sin(degree);
+		if(y>Constant.GAME_HEIGHT-30||y<30) {
+			degree = -degree;
+		}
+		if(x<0||x>Constant.GAME_WIDTH-30) {
+			degree =Math.PI-degree;
+		}
 	}
 }
