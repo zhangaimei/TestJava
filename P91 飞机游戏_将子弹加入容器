@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Date;
 
 import cn.bjsxt.util.Constant;
 import cn.bjsxt.util.GameUtil;
@@ -16,8 +17,12 @@ import cn.bjsxt.util.MyFrame;
 public class PlaneGameFrame extends MyFrame{
 	Image bg = GameUtil.getImage("images/bg.jpg");
 	Plane p = new Plane("images/plane.png",50,50);
+	
 	ArrayList bulletList = new ArrayList();	//泛型暂时未学，暂不加。以后学了，强烈建议加上。可扩容数组,用来放子弹。
 	
+	Date startTime;
+	Date endTime;
+	Explode bao;
 	public void paint(Graphics g) {
 		g.drawImage(bg, 0, 0, null);
 		p.draw(g);
@@ -28,22 +33,47 @@ public class PlaneGameFrame extends MyFrame{
 			//检测跟飞机的碰撞。
 			boolean peng = b.getRect().intersects(p.getRect());
 			if(peng) {
-				p.setLive(false);
-			}
-			if(p.isLive()==false) {
-				printInfo(g,"GAME OVER",70);
+				p.setLive(false);	//飞机死掉
+				if(bao==null) {
+					endTime = new Date();
+					bao =new Explode(p.x,p.y);
+				}
+				break;
 			}
 		}
-	}  
+		if(!p.isLive()) {
+			printInfo(g,"GAME OVER",70,100,200,Color.RED);
+			int period = (int) ((endTime.getTime()-startTime.getTime())/1000);	//生成的是毫秒，我们要的是秒。
+			printInfo(g,"生存时间："+period+"秒",30,100,260,Color.RED);
+			
+			switch(period/10){
+			case 0:
+			case 1:
+				printInfo(g,"菜鸟",40,100,300,Color.red);
+				break;
+			case 2:
+				printInfo(g,"小鸟",40,100,300,Color.red);
+				break;
+			case 3:
+				printInfo(g,"大鸟",40,100,300,Color.red);
+				break;
+			default:
+				printInfo(g,"鸟人",40,100,300,Color.red);
+				break;
+			}
+			bao.draw(g);
+			//printInfo(g,"分数：100",10,(int)p.x,(int)p.y,Color.yellow);
+		}  
+	}
 	/**
 	 * 在窗口上打印信息
 	 */
-	public void printInfo(Graphics g,String str,int size) {
+	public void printInfo(Graphics g,String str,int size,int x,int y,Color color) {
 		Color c = g.getColor();
-		g.setColor(Color.WHITE);
+		g.setColor(color);
 		Font f = new Font("宋体",Font.BOLD,size);
 		g.setFont(f);
-		g.drawString(str, (int)p.x, (int)p.y);
+		g.drawString(str, x, y);
 		g.setColor(c);
 	}
 	public static void main(String[] args) {
@@ -56,10 +86,11 @@ public class PlaneGameFrame extends MyFrame{
 		addKeyListener(new KeyMonitor());
 		
 		//生成一堆子弹
-		for(int i=0;i<50;i++) {
+		for(int i=0;i<25;i++) {
 			Bullet b = new Bullet();
 			bulletList.add(b);	//把它丢到容器里
 		}
+		startTime = new Date();
 	}
 	
 	//定义为内部类，可以方便地使用外部类的普通属性
@@ -228,3 +259,30 @@ public class GameObject {
 	}
 }
 
+
+
+
+package cn.bjsxt.plane;
+
+import java.awt.Graphics;
+import java.awt.Image;
+
+import cn.bjsxt.util.GameUtil;
+
+public class Explode {
+	double x,y;
+	int width=100;
+	int height=100;
+	Image img;
+	
+	public void draw(Graphics g) {
+		img = GameUtil.getImage("images/fire1.gif");
+			if(width<610&&height<610) {
+				g.drawImage(img, (int)x, (int)y, width, height, null);
+				width++;
+				height++;
+			}
+	}
+	public Explode(double x,double y) {
+	}
+}
