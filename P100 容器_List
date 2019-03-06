@@ -1,0 +1,49 @@
+package cn.bjsxt.collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+public class Test01 {
+	public static void main(String[] args) {
+		List list = new ArrayList();
+		//ArrayList：底层实现时数组，线程不安全，效率高。所以，查询快。修改，插入，删除慢。
+		//LinkList：底层实现是链表，线程不安全，效率高。所以，查询慢。修改，插入，删除快。
+		//Vector：线程安全的，效率低。（底层也是用数组实现的）
+		list.add("aaa");
+		list.add(new Date());
+		list.add(new Dog());
+		list.add(123);	//包装类的：自动装箱！自动转为Integer类（包装类的对象）
+	
+		System.out.println(list.size());
+		
+		System.out.println(list.isEmpty());
+		list.remove(new Date());	//size仍为4，跟上面的new Date()是两个对象，跟hashcode和equals有关
+		System.out.println(list.size());	//size跟数组的长度不一样，数组长度必然比此size大
+											//Object里的equals表示两个的地址，String里的equals表示两个的值。
+		
+		List list2 = new ArrayList();
+		list2.add("bbb");
+		list2.add("ccc");
+		
+		list.add(list2);
+		
+		//跟顺序的操作
+		String str = (String) list.get(0);  
+		System.out.println(str);
+		list.set(0, "ababa");
+	}
+
+}
+class Dog{
+}
+
+
+
+
+Console：
+4
+false
+4
+aaa
