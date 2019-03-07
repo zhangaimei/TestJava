@@ -1,0 +1,107 @@
+package cn.bjsxt.collection;
+/**
+ * 掌握add、get应付一般的面试够了
+ * @author zam
+ *
+ */
+public class MyLinkedList {
+	private Node first;	//现在这个节点
+	private Node last;	//上一个节点
+	
+	private int size;
+	
+	public int size() {
+		return size;
+	}
+	
+	public void add(Object obj) {
+		Node n = new Node();
+		if(first==null) {
+			n.setPrevious(null);
+			n.setObj(obj);
+			n.setNext(null);
+			
+			first = n;	//此节点n既是第一个，又是最后一个
+			last = n;
+		}else {
+			//直接往last节点后增加新节点
+			n.setPrevious(last);
+			n.setObj(obj);
+			n.setNext(null);
+			
+			last.setNext(n);
+			
+			last = n;
+		}
+		size++;
+	}
+	
+	public Object get(int index) {
+		Node temp = node(index);
+		if(temp!=null) {
+			return temp.obj;
+		}
+		return null;
+	}
+	
+	public void remove(int index) {
+		Node temp = node(index);
+		if(temp!=null) {
+			Node up = temp.previous;	//即上一个节点整个为up=这个节点temp的左边节点
+			Node down = temp.next;
+			up.next = down;
+			down.previous = up;	//画图
+		}
+		
+	}
+	
+	private Node node(int index) {
+		rangeCheck(index);
+		Node temp = null;
+		if(first!=null) {
+			temp = first;
+			for(int i=0;i<index;i++) {
+				temp = temp.next;
+			}
+		}
+		return temp;
+	}
+	
+	private void  rangeCheck(int index) {
+		if(index<0||index>=size) {
+			try {
+				throw new Exception();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void add(int index,Object obj) {
+		Node temp = node(index);
+		Node newNode = new Node();
+		newNode.obj = obj;
+		
+		if(temp!=null) {
+			Node up = temp.previous;
+			up.next = newNode;
+			newNode.previous = up;
+			newNode.next = temp;
+			temp.previous = newNode;
+			
+			size++;
+		}
+	}
+	
+	public static void main(String[] args) {
+		MyLinkedList list = new MyLinkedList();
+		list.add("aaa");
+		list.add("bbb");
+		list.add("ccc");
+		list.add(1, "BBB");
+		System.out.println(list.size());
+		System.out.println(list.get(1));
+	}
+
+}
