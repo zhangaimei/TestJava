@@ -1,0 +1,29 @@
+package cn.bjsxt.collection;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 测试Map的基本用法
+ * @author zam
+ *
+ */
+public class TestMap {
+	public static void main(String[] args) {
+		Map map = new HashMap();
+		map.put("张爱梅", new Wife("张碧波"));	//通过张爱梅找到张碧波
+		map.put("罗晋", new Wife("唐嫣"));
+		
+		//map.remove("张爱梅");	//张碧波也被从容器中移除
+		Wife w = (Wife) map.get("张爱梅");
+		System.out.println(w.name);
+		
+	}
+}
+
+class Wife{
+	String name;
+	public Wife(String name) {
+		this.name = name;
+	}
+}
