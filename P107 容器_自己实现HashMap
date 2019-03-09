@@ -1,0 +1,64 @@
+package cn.bjsxt.collection;
+
+import java.util.LinkedList;
+
+/**
+ * 自定义Map的升级版：
+ * 1.提高查询的效率
+ * @author zam
+ */
+public class SxtMap002 {
+	
+	LinkedList[] arr = new LinkedList[999];	//Map的底层结构就是：数组+链表！LinkedList数组，即数组里放链表
+	int size;
+	
+	//创建链表给数组，或 将键值对e放入链表
+	public void put(Object key,Object value) {
+		SxtEntry e = new SxtEntry(key,value);	//链表里放Entry键值对
+		
+		int a = key.hashCode()%arr.length;	//根据每个key生成一个地址，hash码元素
+		if(arr[a]==null) {
+			LinkedList list = new LinkedList();	//如果等于空，arr[]里没有链表，就建一个LinkedList对象
+			arr[a] = list;
+			list.add(e);	
+		}else {	//不等于空，arr[]里已经有链表对象
+			LinkedList list = arr[a];
+			
+			//往里放的时候做判断，处理键值重复状况
+			for(int i=0;i<list.size();i++) {
+				SxtEntry e2 = (SxtEntry) list.get(i);	//从list里get之前放进去的键——值对
+				if(e2.key.equals(key)) {
+					e2.value = value;	
+				}
+			}
+			arr[a].add(e);	//正常不重复情况：把新的键——值对加入到链表list
+		}
+	}
+	
+	//在链表中获取键值对e，并跟输入比较
+	public Object get(Object key) {	
+		//return arr[key.hashCode()%999];
+		int a = key.hashCode()%arr.length;
+		if(arr[a]!=null) {	//arr[a]里已经有东西了
+			LinkedList list = arr[a];	
+			
+			//list里边放着所有键值对，接下来遍历list里所有的key
+			for(int i=0;i<list.size();i++) {	
+				SxtEntry e = (SxtEntry) list.get(i);
+				if(e.key.equals(key)) {
+					return e.value;
+				}
+			}
+		}
+		return null;
+	}
+
+	public static void main(String[] args) {
+		SxtMap002 m = new SxtMap002();
+		m.put("张爱梅",new Wife("张碧波"));
+		m.put("张三",new Wife("李四"));
+		m.put("张三",new Wife("王麻子"));
+		Wife w = (Wife) m.get("张三");
+		System.out.println(w.name);
+	}
+}
