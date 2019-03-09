@@ -60,9 +60,16 @@ public class MyLinkedList {
 		Node temp = null;
 		if(first!=null) {
 			temp = first;
-			for(int i=0;i<index;i++) {
-				temp = temp.next;
-			}
+			//将查询节点做了一个优化
+			 if (index < (size >> 1)) {	//右移1位=除2
+		            temp = first;
+		            for (int i = 0; i < index; i++)
+		                temp = temp.next;
+		        } else {
+		            temp = last;
+		            for (int i = size - 1; i > index; i--)
+		                temp = temp.previous;
+		        }	
 		}
 		return temp;
 	}
@@ -99,9 +106,11 @@ public class MyLinkedList {
 		list.add("aaa");
 		list.add("bbb");
 		list.add("ccc");
-		list.add(1, "BBB");
+		list.add("ddd");
+		list.add("eee");
+		list.add(1, "BBB");	//将"BBB"插入到1处
 		System.out.println(list.size());
-		System.out.println(list.get(1));
+		System.out.println(list.get(3));
 	}
 
 }
