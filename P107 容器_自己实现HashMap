@@ -16,6 +16,9 @@ public class SxtMap002 {
 	public void put(Object key,Object value) {
 		SxtEntry e = new SxtEntry(key,value);	//链表里放Entry键值对
 		
+		int hash = key.hashCode();
+		hash = hash<0?-hash:hash;
+		
 		int a = key.hashCode()%arr.length;	//根据每个key生成一个地址，hash码元素
 		if(arr[a]==null) {
 			LinkedList list = new LinkedList();	//如果等于空，arr[]里没有链表，就建一个LinkedList对象
