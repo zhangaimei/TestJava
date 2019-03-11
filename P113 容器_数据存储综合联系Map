@@ -1,0 +1,110 @@
+package cn.bjsxt.collection2;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Employee {	//Javabean,实体类
+	private int id;
+	private String name;
+	private int salary;
+	private String department;
+	private Date hireDate;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getSalary() {
+		return salary;
+	}
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public Date getHireDate() {
+		return hireDate;
+	}
+	public void setHireDate(Date hireDate) {
+		this.hireDate = hireDate;
+	}
+	public Employee(int id, String name, int salary, String department, String hireDate) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.salary = salary;
+		this.department = department;
+		DateFormat format = new SimpleDateFormat("yyyy-MM");
+		try {
+			this.hireDate = format.parse(hireDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
+
+
+
+package cn.bjsxt.collection2;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Test02 {
+	
+	public static void main(String[] args) {
+		//用一个map封装了一组数据
+		Map map = new HashMap();
+		map.put("id", 0301);
+		map.put("name", "高琪");
+		map.put("salary", 3000);
+		map.put("department", "项目部");
+		map.put("hireDate", "2007-10");
+		
+		Map map2 = new HashMap();
+		map2.put("id", 0302);
+		map2.put("name", "马士兵");
+		map2.put("salary", 3050);
+		map2.put("department", "教学部");
+		map2.put("hireDate", "2006-10");
+		
+		Map map3 = new HashMap();
+		map3.put("id", 0303);
+		map3.put("name", "裴新");
+		map3.put("salary", 3055);
+		map3.put("department", "教学部");
+		map3.put("hireDate", "2006-10");
+		
+		List<Map> list = new ArrayList<Map>();
+		
+		list.add(map);
+		list.add(map2);
+		list.add(map3);
+		
+		printEmpName(list);
+	}
+	
+	public static void printEmpName(List<Map> list) {
+		for(int i=0;i<list.size();i++) {
+			Map tempMap = list.get(i);
+			System.out.println(tempMap.get("name")+"————"+tempMap.get("salary"));
+		}
+	}
+}
+
