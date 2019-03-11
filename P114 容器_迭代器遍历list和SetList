@@ -1,0 +1,48 @@
+package cn.bjsxt.iterator;
+/**
+ * 测试迭代器iterator
+ * @author zam
+ *
+ */
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+public class Test01 {
+	
+	public static void main(String[] args) {
+		List list = new ArrayList();
+		list.add("aaa");
+		list.add("bbb");
+		list.add("ccc");
+		
+		//通过索引遍历List
+		for(int i=0;i<list.size();i++) {
+			System.out.println(list.get(i));
+		}
+		
+		//通过迭代器遍历List
+		for(Iterator iter2 = list.iterator();iter2.hasNext();)	{ 
+			String str = (String) iter2.next();
+			System.out.println(str);
+			iter2.remove();	//删掉last（上一个）遍历的
+		}
+		
+		System.out.println(list.size()+"*******");
+	
+		Set set = new HashSet();	//Set无序，用iterator遍历
+		set.add("高1");
+		set.add("高2");
+		set.add("高3");
+		
+		//通过迭代器遍历Set
+		//Iterator iter = set.iterator();
+		//while(iter.hasNext()) {
+		for(Iterator iter = set.iterator();iter.hasNext();)	{ 
+			String str = (String) iter.next();
+			System.out.println(str);
+		}
+	}
+}
