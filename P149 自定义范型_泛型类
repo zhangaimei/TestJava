@@ -1,0 +1,124 @@
+package cn.bjsxt.gen01;
+/**
+ * 获取值：
+ * 1、强制类型转换
+ * 2、手动类型检查：避免转换错误java.lang.ClassCastException
+ * @author zam
+ *
+ */
+public class App {
+
+	public static void main(String[] args) {
+		Object obj = 80;
+		int score = (int)obj;	//1.7以后，Object——>integer——>自动拆箱
+		System.out.println(score);
+		
+		//存入整数int——>Integer——>Object
+		Student stu = new Student(80,90);
+		//stu.getJavase();
+		int javaseScore = (Integer)stu.getJavase();
+		String oracleScore = null;
+		if(stu.getOracle() instanceof String) {
+			oracleScore =(String)stu.getOracle();
+		}
+		System.out.println("分数为："+javaseScore+","+oracleScore);
+		
+	} 
+}
+
+
+
+package cn.bjsxt.gen02;
+/**
+ * 泛型类：声明时使用泛型
+ * 字母：
+ * T Type表示类型；
+ * K V 分别代表键值中的Key Value
+ * E 代表Element
+ * 使用时确定类型
+ * 注意：
+ * 1、泛型只能使用引用类型，不能基本类型
+ * 2、泛型使用，字母不能在静态属性|静态方法上。
+ * @author zam
+ *
+ */
+public class Student<T1,T2> {
+	private T1 javaScore;
+	private T2 oracleScore;
+	
+	//泛型声明时不能使用静态属性|静态方法上
+	//private static T1 test;	//报错
+	
+	public T1 getJavaScore() {
+		return javaScore;
+	}
+
+	public void setJavaScore(T1 javaScore) {
+		this.javaScore = javaScore;
+	}
+
+	public T2 getOracleScore() {
+		return oracleScore;
+	}
+
+	public void setOracleScore(T2 oracleScore) {
+		this.oracleScore = oracleScore;
+	}
+
+	public static void main(String[] args) {
+		//使用时指定类型（引用类型）
+		Student<String,Integer> stu = new Student<String,Integer>();
+		//1.安全：类型检查
+		stu.setJavaScore("优秀");
+		//2.省心：类型转换
+		int it = stu.getOracleScore();	//自动拆箱
+	}
+}
+
+
+
+package cn.bjsxt.gen02;
+/**
+ * 接口中泛型字母只能使用在方法中
+ * @author zam
+ *
+ * @param <T>
+ */
+public interface Comparator<T> {
+	void compare(T t);
+}
+
+
+
+package cn.bjsxt.gen02;
+
+import java.io.Closeable;
+import java.io.IOException;
+
+/**
+ * 泛型方法<>返回类型签名
+ * 只能访问对象的信息，不能修改信息(调不了a.set）
+ * @author zam
+ *
+ */
+public class TestMethod {
+	public static void main(String[] args) {
+ 	}
+	//泛型方法
+	public static <T> void test(T a) {
+		System.out.println(a);
+	}
+	//extends <= 	T是接口Closeable的实现类
+	public static <T extends Closeable>void test(T... a){
+		for(T temp:a) {
+			if(null!=temp) {
+				try {
+					temp.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+}
