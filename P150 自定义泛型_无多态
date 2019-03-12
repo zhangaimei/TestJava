@@ -1,0 +1,183 @@
+package cn.bjsxt.gen04;
+//泛型类
+public class A<T> {
+}
+
+
+package cn.bjsxt.gen04;
+/**
+ * 泛型没有多态
+ * @author zam
+ *
+ */
+public class App {
+	public static void main(String[] args) {
+		//A<Fruit> f = new A<Apple>();
+		A<Fruit> f =new A <Fruit>();
+		//test(new A<Apple>)
+	}
+	//形参使用多态
+	public static void test(A<Fruit> f) {
+		
+	}
+	//返回类型使用多态
+	public static A<Fruit> test2(){
+		//return (A<Fruit) (new A<Apple>());
+		return null;
+	}
+}
+
+
+
+package cn.bjsxt.gen04;
+/**
+ * 没有泛型数组
+ * 声明可以使用，但是创建失败
+ * @author zam
+ *
+ */
+public class Arry {
+	public static void main(String[] args) {
+		Integer[] arr = new Integer[4];
+		//Student<String>[] arr2 = new Student<String>[10];
+		Student<?>[] arr2 = new Student[10];	//new前面是声明，new后面是创建
+		
+		MyArrayList<String> strList =new MyArrayList<String>();
+		strList.add(0,"a");
+		strList.add(1,"b");
+		String elem = strList.getElem(1);
+		System.out.println(elem);
+	}
+}
+
+class MyArrayList<E>{
+	Object[] cap =new Object[10];	//虽然使用Object接收的，但E[]这个类型也回来了
+	
+	public void add(int idx, E e) {	
+		cap[idx] = e;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public E[] getAll() {	//没有泛型数组，加到类里面，然后强制类型转换
+		return (E[]) cap;
+	}
+	
+	public E getElem(int idx) {
+		return (E) cap[idx];
+	}
+}
+
+
+
+package cn.bjsxt.gen04;
+
+public class Bjsxt <T>{
+	T stu;
+	
+	public static void main(String[] args) {
+		//泛型的嵌套
+		Bjsxt<Student<String>> room = new Bjsxt<Student<String>>();
+		//从外到内拆分
+		room.stu = new Student<String>();	//？？为啥room.stu也需要new
+		Student<String> stu = room.stu;
+		String score = stu.score;
+		System.out.println(score);
+	}
+}
+
+
+
+package cn.bjsxt.gen04;
+
+public class Fruit {
+
+}
+class Apple extends Fruit{
+	
+}
+
+
+
+package cn.bjsxt.gen04;
+/**
+ * 多态的两种形式
+ * @author zam
+ *
+ */
+public class FruitApp {
+	public static void main(String[] args) {
+		Fruit f = new Apple();
+		test(new Apple());
+	}
+	//形参使用多态
+	public static void test(Fruit f) {
+		
+	}
+	//返回类型使用多态
+	public static Fruit test2() {
+		return new Apple();
+	}
+}
+
+
+
+package cn.bjsxt.gen04;
+/**
+ * 通配符
+ * ?类型不定，使用时确定类型
+ * ?使用：声明类型|声明方法上 ，不能声明类或使用时
+ *  ？extends ：<= 上限 指定类型 子类或自身
+ *  ？ super ：>=下限 指定类型 为自身或父类
+ * @author zam
+ *
+ */
+public class Student<T> {
+	T score;
+	
+	public static void main(String[] args) {
+		Student<?> stu = new Student<String>();
+		test(new Student<Integer>());
+		
+		test2(new Student<Apple>());
+		//test3(new Student<Apple>());//泛型没有多态
+		
+		//test4(new Student<Apple>());//<
+		stu = new Student<Fruit>();
+		//test4(stu);	//使用时确定类型
+		test4(new Student<Object>());
+		test4(new Student<Fruit>());
+	}
+	
+	public static void test(Student<?> stu) {
+		
+	}
+	public void test3(Student<Fruit> stu) {
+		
+	}
+	//<=
+	public static void test2(Student<? extends Fruit> stu) {
+		
+	}
+	//>=
+	public static void test4(Student<? super Fruit> stu) {
+	
+	}
+}
+
+
+
+package cn.bjsxt.gen04;
+/**
+ * 1.7中使用泛型，声明一次类型即可
+ * 在使用|创建时不用指定类型。
+ */
+import java.util.ArrayList;
+import java.util.List;
+
+public class Test7 {
+	public static void main(String[] args) {
+		List<String> arrList= new ArrayList<String>();
+		List<String> arrList1= new ArrayList();
+	}
+}
+
