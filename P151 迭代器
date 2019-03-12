@@ -1,0 +1,178 @@
+package cn.bjsxt.iterator;
+/**
+ * 简化迭代器原理
+ * hashNext
+ * next
+ * @author zam
+ *
+ */
+public class MyArrayList {
+	private String[] elem = {"a","b","c","d","e","f","g"};
+	private int size = elem.length;//没有泛型数组
+	private int cursor = -1;
+	/**
+	 * 判断是否存在下一个元素
+	 * @param args
+	 */
+	public boolean hasNext() {
+		return cursor+1<size;
+	}
+	/**
+	 * 获取下一个元素
+	 * @param args
+	 */
+	public String next() {
+		cursor++;	//移动一次
+		return elem[cursor];
+	}
+	/**
+	 * 删除元素
+	 * @param args
+	 */
+	public void remove() {
+		 
+	}
+	public static void main(String[] args) {
+		MyArrayList list = new MyArrayList();
+		while(list.hasNext()) {
+			System.out.print(list.next());
+		}
+	}
+}
+
+
+
+Console:
+abcdefg
+
+
+
+package cn.bjsxt.iterator;
+
+import java.util.Iterator;
+/**
+ * 简化迭代器原理
+ * hashNext
+ * next
+ * @author zam
+ */
+public class MyArrayList02 {
+	private String[] elem = {"a","b","c","d","e","f","g"};
+	private int size = elem.length;	//没有泛型数组
+
+private class MyIt implements Iterator<String>{
+	private int cursor = -1;
+	/**
+	 * 判断是否存在下一个元素
+	 * @param args
+	 */
+	public boolean hasNext() {
+		return cursor+1<size;
+	}
+	/**
+	 * 获取下一个元素
+	 * @param args
+	 */
+	public String next() {
+		cursor++;	//移动一次
+		return elem[cursor];
+	}
+	/**
+	 * 删除元素
+	 * @param args
+	 */
+	public void remove() {
+		 //没有实现
+	}
+}
+
+	public Iterator<String> iterator(){
+		return new MyIt();
+	}
+	
+	public static void main(String[] args) {
+		MyArrayList02 list = new MyArrayList02();
+		Iterator<String> it =list.iterator();
+		while(it.hasNext()) {
+			System.out.print(it.next());
+		}
+	}
+}
+
+
+
+Console:
+abcdefg
+
+
+
+package cn.bjsxt.iterator;
+
+import java.util.Iterator;
+/**
+ * 简化迭代器原理加入接口提供方法
+ * hashNext
+ * next
+ * @author zam
+ */
+public class MyArrayList03 implements java.lang.Iterable<String>{
+	private String[] elem = {"a","b","c","d","e","f","g"};
+	private int size = elem.length;	//没有泛型数组
+/**
+ * 匿名内部类
+ * @return
+ */
+	public Iterator<String> iterator(){
+		return new Iterator<String>() {
+			private int cursor = -1;
+			/**
+			 * 判断是否存在下一个元素
+			 */
+			public boolean hasNext() {
+				return cursor+1<size;
+			}
+			/**
+			 * 获取下一个元素
+			 */
+			public String next() {
+				cursor++;	//移动一次
+				return elem[cursor];
+			}
+			/**
+			 * 删除元素
+			 */
+			public void remove() {
+				//没有实现
+			}
+		};
+	}
+
+	public static void main(String[] args) {
+		MyArrayList03 list = new MyArrayList03();
+		Iterator<String> it =list.iterator();
+		while(it.hasNext()) {
+			System.out.print(it.next());
+		}
+		System.out.println();
+		//重复迭代，对象未变
+		it =list.iterator();
+		while(it.hasNext()) {
+			System.out.print(it.next());
+			it.remove(); 	//删除元素
+		}
+		System.out.println();
+		System.out.println("增强for，必须实现java.lang.Iterable接口，重写iterator方法");
+		
+		for(String temp:list) {	//也可以用增强for循环：定义变量temp用来表示接口list中的值
+			System.out.print(temp);
+		}
+	}
+}
+
+
+
+Console:
+abcdefg
+abcdefg
+增强for，必须实现java.lang.Iterable接口，重写iterator方法
+abcdefg
