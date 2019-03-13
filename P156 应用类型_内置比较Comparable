@@ -1,0 +1,112 @@
+package cn.bjsxt.sort.innerType;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 数组的排序
+ * @author zam
+ *
+ */
+public class Utils {
+	/**
+	 * 容器排序
+	 */
+	@SuppressWarnings("unchecked")
+	public static<T extends Comparable<T>> void sort(List<T> list) {
+		//第一步：转成数组
+		Object[] arr =list.toArray();	//转为数组，没有泛型数组，所以使用Object
+		sort(arr);	//使用下面的方法
+		//第二步：改变容器中对应的值
+		for(int i=0;i<arr.length;i++) {
+			list.set(i, (T) arr[i]);	//依次拿入arr[]中的值
+		}
+	}
+	/**
+	 * 数组排序（使用泛型方法）
+	 * @param arr
+	 */
+	public static<T extends Comparable<T>> void sort(T[] arr) {
+		//从大到小排序 降序
+		boolean sorted = true;	
+		int len = arr.length;
+		for(int j=0;j<len-1;j++) {
+			sorted =true;//假定有序
+			for(int i=0;i<len-j-1;i++) {
+				if(((Comparable)arr[i]).compareTo(arr[i+1])<0) {
+					T temp = arr[i];
+					arr[i]=arr[i+1];
+					arr[i+1]=temp;
+					sorted = false;	//假定失败
+				}
+			}
+			if(sorted) {
+				break;
+			}
+		}
+	}
+
+	public static void sort(Object[] arr) {
+		//从大到小排序 降序
+		boolean sorted = true;	
+		int len = arr.length;
+		for(int j=0;j<len-1;j++) {
+			sorted =true;//假定有序
+			for(int i=0;i<len-j-1;i++) {
+				if(((Comparable)arr[i]).compareTo(arr[i+1])<0) {
+					Object temp = arr[i];
+					arr[i]=arr[i+1];
+					arr[i+1]=temp;
+					sorted = false;	//假定失败
+				}
+			}
+			if(sorted) {
+				break;
+			}
+		}
+	}
+}
+
+
+
+package cn.bjsxt.sort.innerType;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+public class Dem04 {
+	public static void main(String[] args) {
+		Date[] arr = new Date[3];
+		arr[0] = new Date();
+		arr[1] = new Date(System.currentTimeMillis()-1000*60*60);
+		arr[2] = new Date(System.currentTimeMillis()+1000*60*60);
+		Utils.sort(arr);  //降序
+		System.out.println(Arrays.toString(arr));
+		
+		//字符串
+		String[] arr2 = {"a","def","abc","abcd"};
+		Utils.sort(arr2); 
+		System.out.println(Arrays.toString(arr2));
+		System.out.println("==============List排序===========");
+		
+		//存放容器中
+		List<String> list = new ArrayList<String>();
+		list.add("a");
+		list.add("abcd");
+		list.add("def");
+		Utils.sort(list);
+		System.out.println(list);
+	}
+}
+
+
+
+Console：
+[Wed Mar 13 21:57:35 CST 2019, Wed Mar 13 20:57:35 CST 2019, Wed Mar 13 19:57:35 CST 2019]
+[def, abcd, abc, a]
+==============List排序=========
+[def, abcd, a]
