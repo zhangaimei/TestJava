@@ -1,0 +1,92 @@
+package cn.bjsxt.sort;
+
+import java.util.Arrays;
+
+public class BubbleSort02 {
+	public static void main(String[] args) {
+		int[] arr= {9,8,7,6,5};
+		sort(arr);
+	}
+	//最终版本，减少趟数
+	public static void sort(int[] arr) {
+		int len = arr.length;
+		for(int j=0;j<len-1;j++) {
+			System.out.println("第"+(j+1)+"趟：");
+			for(int i=0;i<len-j-1;i++) {
+				System.out.print("第"+(i+1)+"次：");
+				if(arr[i]>arr[i+1]) {
+					int temp = arr[i];
+					arr[i]=arr[i+1];
+					arr[i+1]=temp;
+				}
+				System.out.println(Arrays.toString(arr));	//用toString方法打印数组内容
+			}
+		}
+	}
+}
+
+
+
+Console：
+第1趟：
+第1次：[8, 9, 7, 6, 5]
+第2次：[8, 7, 9, 6, 5]
+第3次：[8, 7, 6, 9, 5]
+第4次：[8, 7, 6, 5, 9]
+第2趟：
+第1次：[7, 8, 6, 5, 9]
+第2次：[7, 6, 8, 5, 9]
+第3次：[7, 6, 5, 8, 9]
+第3趟：
+第1次：[6, 7, 5, 8, 9]
+第2次：[6, 5, 7, 8, 9]
+第4趟：
+第1次：[5, 6, 7, 8, 9]
+
+
+
+package cn.bjsxt.sort;
+
+import java.util.Arrays;
+
+public class BubbleSort03 {
+	public static void main(String[] args) {
+		int[] arr = {1,2,9,3,4};
+		sort(arr);
+	}
+	//第二版本，减少每一趟的次数
+	public static void sort(int[] arr) {
+		boolean sorted = true;	
+		int len = arr.length;
+		for(int j=0;j<len-1;j++) {
+			sorted =true;//假定有序
+			System.out.println("第"+(j+1)+"趟：");
+			for(int i=0;i<len-j-1;i++) {
+				System.out.print("第"+(i+1)+"次：");
+				if(arr[i]>arr[i+1]) {
+					int temp = arr[i];
+					arr[i]=arr[i+1];
+					arr[i+1]=temp;
+					sorted = false;	//假定失败
+				}
+				System.out.println(Arrays.toString(arr));	//用toString方法打印数组内容
+			}
+			if(sorted) {
+				break;
+			}
+		}
+	}
+}
+
+
+
+Console：
+第1趟：
+第1次：[1, 2, 9, 3, 4]
+第2次：[1, 2, 9, 3, 4]
+第3次：[1, 2, 3, 9, 4]
+第4次：[1, 2, 3, 4, 9]
+第2趟：
+第1次：[1, 2, 3, 4, 9]
+第2次：[1, 2, 3, 4, 9]
+第3次：[1, 2, 3, 4, 9]
