@@ -1,0 +1,107 @@
+package cn.bjsxt.io.file;
+
+import java.io.File;
+import java.io.FilenameFilter;
+/**
+ * 5、操作目录
+ * mkdir()创建目录，必须确保父目录存在，如果不存在，创建失败
+ * mkdirs()
+ * list()文件|目录名 字符串形式
+ * listFiles()
+ * static listRoots()根路径
+ */
+public class Demo04 {
+	public static void main(String[] args) {
+		String path = "E:/JDK/Mycode/ZhangAimei/";
+		File src = new File(path);	//文件夹
+		if(src.isDirectory()) {
+			System.out.println("=======子目录|文件名=====");
+			String[] subNames = src.list();	//打印此路径下的目录名
+			for(String temp:subNames) {
+				System.out.println(temp);
+			}
+			
+			System.out.println("======子目录|文件的File对象=====");
+			File[] subFiles = src.listFiles();	//打印此路径
+			for(File temp:subFiles) {
+				System.out.println(temp.getAbsolutePath());
+			}
+			
+			//命令设计模式
+			System.out.println("=====子文件.java对象======");
+			subFiles =src.listFiles(new FilenameFilter(){	//接口是不能直接new的，只能创建匿名对象
+				@Override
+				public boolean accept(File dir, String name) {	//dir代表src
+					//System.out.println(dir.getAbsolutePath());
+					return new File(dir,name).isFile() && name.endsWith(".java");
+				}
+			});
+			for(File temp:subFiles) {
+				System.out.println(temp.getAbsolutePath());
+			}
+		
+		//src.mkdir();	//创建新目录，须确保上一级的父路径存在。
+		src.mkdirs();
+		}
+	}
+}
+
+
+
+Console:
+=======子目录|文件名=====
+a.txt
+b.txt
+c.java
+======子目录|文件的File对象=====
+E:\JDK\Mycode\ZhangAimei\a.txt
+E:\JDK\Mycode\ZhangAimei\b.txt
+E:\JDK\Mycode\ZhangAimei\c.java
+=====子文件.java对象======
+E:\JDK\Mycode\ZhangAimei\c.java
+
+
+
+
+package cn.bjsxt.io.file;
+
+import java.io.File;
+import java.util.Arrays;
+/**
+ * 输出子孙级目录|文件的名称（绝对路径）
+ * 1、listFiles()
+ * 2、递归
+ * @author zam
+ */
+public class Demo05 {
+	public static void main(String[] args) {
+		String path = "E:/JDK/Mycode/ZAM";
+		File parent = new File(path);
+		
+		File[] roots = File.listRoots();
+		System.out.println(Arrays.toString(roots));
+		printName(parent);
+	}
+	
+	public static void printName(File src) {
+		if(null==src|| !src.exists()) {
+			return;
+		}
+		System.out.println(src.getAbsolutePath());
+		
+		if(src.isDirectory()) {	//如果src是文件夹
+			for(File sub:src.listFiles()) {
+				printName(sub);
+			}
+		}
+	}
+}
+
+
+
+
+Console:
+[C:\, E:\, F:\, G:\]
+E:\JDK\Mycode\ZAM
+E:\JDK\Mycode\ZAM\ZhangAimei
+E:\JDK\Mycode\ZAM\ZhangAimei\a.txt
