@@ -1,0 +1,54 @@
+package cn.bjsxt.io.byte1;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+/**
+ * 文件夹的拷贝
+ * 1、文件 复制 copyFile
+ * 2、文件 创建mkdirs()
+ * 3、递归查找子孙级
+ * @author zam
+ */
+public class CopyDir {
+	public static void main(String[] args) {
+		//源目录
+		String srcPath ="E:/JDK/Mycode/ZAM";
+		//目标目录
+		String destPath ="E:/JDK/Mycode/ZhangAimei";
+		copyDir(srcPath,destPath);
+	}
+	/**
+	 * 拷贝文件夹
+	 * @param srcPath 源路径
+	 * @param destPath目标路径
+	 */
+	private static void copyDir(String srcPath, String destPath) {
+		File src = new File(srcPath);
+		File dest = new File(destPath);
+		copyDirDetail(src,dest);
+	}
+	/**
+	 * 拷贝文件夹
+	 * @param src
+	 * @param dest
+	 */
+	private static void copyDirDetail(File src, File dest) {
+		if(src.isFile()) {
+			try {
+				FileUtil.copyFile(src, dest);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else if(src.isDirectory()) {
+			//确保目标文件夹存在
+			dest.mkdirs();	//在目标文件夹里建了一个名为ZAM的文件夹
+			//获取下一级目录|文件（下一级，不是子孙级）
+			for(File sub:src.listFiles()) {
+				copyDirDetail(sub, new File(dest,sub.getName()));	//自己调用自己
+			}
+		}
+	}
+}
