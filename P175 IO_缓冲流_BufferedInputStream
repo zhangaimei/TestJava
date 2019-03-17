@@ -1,0 +1,122 @@
+package cn.bjsxt.io.buffered;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import cn.bjsxt.io.byte1.FileUtil;
+/**
+ * 字节流文件拷贝+缓冲流，提高性能
+ * 缓冲流（节点流）
+ * @author zam
+ *
+ */
+public class BufferedByteDemo {
+	public static void main(String[] args) {
+		
+	}
+	
+	public static void copyFile(String srcPath,String destPath) throws FileNotFoundException, IOException{
+		//1、建立联系源（存在且为文件）+目的地（文件可以不存在）
+		File src = new File(srcPath);
+		File dest = new File(destPath);	//把图片1复制，并改名为100
+		if(! src.isFile()) {	//不是文件或者为null
+			System.out.println("只能拷贝文件");
+			throw new IOException();
+		}
+		//dest为已经存在的文件夹，不能建立于文件夹同名的文件,如果是file可以覆盖
+		if(dest.isDirectory()) {
+			System.out.println(src.getAbsolutePath()+"不能建立与文件夹同名的文件");
+			throw new IOException(src.getAbsolutePath()+"不能建立与文件夹同名的文件");
+		}
+		//2、选择流
+		InputStream is = new BufferedInputStream(new FileInputStream(src));
+		OutputStream os = new BufferedOutputStream (new FileOutputStream(dest));
+		//3、文件拷贝 循环+读取+写出
+		byte[] flush = new byte[1024];	//每次读取的字节数组，读1024个字节数。
+		int len =0;	//接收长度
+		//读取
+		while(-1!=(len=is.read(flush)))  {	//循环读取，写成>=0也可以
+			//写出
+			os.write(flush, 0, len);
+		}
+		os.flush();	//强制刷出
+		//关闭流
+		os.close();
+		is.close();
+	}
+}
+
+
+
+
+package cn.bjsxt.io.buffered;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+/**
+ * 字符缓冲流+新增方法（不能发生多态）
+ * @author zam
+ *
+ */
+public class BufferedCharDemo {
+	public static void main(String[] args) {
+		//创建源
+		File src = new File("E:/JDK/Mycode/ZhangAimei/b.txt");
+		File dest = new File("E:/JDK/Mycode/ZhangAimei/d.txt");
+		//选择流
+		BufferedReader reader = null;
+		BufferedWriter wr = null;
+		try {
+			reader = new BufferedReader(new FileReader(src));
+			wr = new BufferedWriter(new FileWriter(dest,true));
+			//读取操作
+			/*
+			char[] flush = new char[10];
+			int len =0;
+			while(-1!=(len=reader.read(flush))) {
+				wr.write(flush, 0, len);
+			}*/
+			//新增方法的操作
+			String line = null;
+			while(null!=(line=reader.readLine())) {
+				wr.write(line);
+				//wr.append("\r\n");
+				wr.newLine();	//换行符
+			}
+			
+			wr.flush();	//强制刷出
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("源文件不存在");
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("文件读取失败");
+		}finally {
+			if(null !=wr) {
+				try {
+					wr.close();
+				} catch (Exception e2) {
+				}
+				try {
+					if(null !=reader) {
+						reader.close();
+					}
+				}catch (Exception e2) {
+				}
+			}
+		}
+	}
+}
