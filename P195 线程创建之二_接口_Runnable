@@ -1,0 +1,84 @@
+package cn.bjsxt.thread.create;
+/**
+ * 推荐Runnable创建线程
+ * 1）、避免单继承的局限性
+ * 2）、便于共享资源 
+ 
+ * 使用Runnable创建线程
+ * 1、类实现Runnable接口+重新run()
+ * 2、启动多线程  使用静态代理
+ *    1）、创建真实角色
+ *    2）、创建代理角色+真实角色引用
+ *    3）、调用  .start（）  启动线程
+ * @author zam
+ */
+public class Programmer implements Runnable {
+
+	@Override
+	public void run() {
+		for(int i=0;i<1000;i++) {
+			System.out.println("一边敲hello…………");
+		}
+	}
+}
+
+
+
+package cn.bjsxt.thread.create;
+/**
+ * 使用Runnable 创建线程
+ * 1、类实现Runnable接口+重写run()  ————>真实角色类
+ 
+ * @author zam
+ *
+ */
+public class ProgrammerApp {
+	public static void main(String[] args) {
+		//1）、创建真实角色
+		Programmer pro = new Programmer();
+		//2）、创建代理角色+真实角色引用
+		Thread proxy = new Thread(pro);
+		//3）、调用  .start（）  启动线程
+		proxy.start();
+		
+		for(int i=0;i<1000;i++) {
+			System.out.println("一边聊qq…………");
+		}
+	}
+}
+
+
+
+
+package cn.bjsxt.thread.create;
+/**
+ * 方便共享资源
+ * @author zam
+ *
+ */
+public class Webe12306 implements Runnable{
+	private int num = 50;
+	
+	@Override
+	public void run() {
+		while(true) {
+			if(num<=0) {
+				break;	//跳出循环
+			}
+			System.out.println(Thread.currentThread().getName()+"抢到了"+num--);
+		}
+	}
+	
+	public static void main(String[] args) {
+		//真实角色
+		Webe12306 web = new Webe12306();
+		//代理(实现了多个代理)
+		Thread t1 = new Thread(web,"路人甲");
+		Thread t2 = new Thread(web,"黄牛乙");
+		Thread t3 = new Thread(web,"工程师");
+		//启动线程
+		t1.start();
+	    t2.start();
+		t3.start();
+	}
+}
