@@ -1,0 +1,49 @@
+package cn.bjsxt.thread.create;
+/**
+ * 模拟龟兔赛跑
+ * 1、创建多线程  继承  Thread +重新run（线程体）
+ * @author zam
+ *
+ */
+public class Rabbit extends Thread{
+	@Override
+	public void run() {
+		//线程体
+		for(int i=0;i<100;i++) {
+			System.out.println("兔子跑了"+i+"步");
+		}
+	}
+}
+	
+class Tortoise extends Thread{
+	@Override
+	public void run() {
+		//线程体
+		for(int i=0;i<100;i++) {
+			System.out.println("乌龟跑了"+i+"步");
+		}
+	}
+}
+		
+
+
+
+
+package cn.bjsxt.thread.create;
+
+
+public class RabbitApp {
+	public static  void main(String[] args) {
+		//创建子类对象
+		Rabbit rab = new Rabbit();
+		Tortoise tor = new Tortoise();
+		
+		//调用start方法
+		rab.start();//不要调用run方法,，如果调用run方法，便是兔子跑完，乌龟再跑
+		tor.start();
+		
+		for(int i=0;i<100;i++) {
+			System.out.println("main==>"+i);
+		}
+	}
+}
