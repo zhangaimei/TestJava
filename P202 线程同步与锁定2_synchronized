@@ -1,0 +1,152 @@
+package cn.bjsxt.thread.syn;
+/**
+ * 单例设计模式：确保一个类只有一个对象
+ * @author zam
+ *
+ */
+public class SynDemo02 {
+	public static void main(String[] args) {
+		JvmThread thread1 = new JvmThread(100);
+		JvmThread thread2 = new JvmThread(500);
+		thread1.start();
+		thread2.start();
+	}
+}
+
+class JvmThread extends Thread{	//创建一个线程,对其访问
+	private long time;
+	public JvmThread() {
+	}
+	public JvmThread(long time) {
+		this.time = time;
+	}
+	@Override
+	public void run() {
+		System.out.println(Thread.currentThread().getName()+"————>创建："+Jvm.getInstance(time));
+	}	
+}
+/**
+ * 单例设计模式
+ * 确保一个类只有一个对象
+ * 懒汉式   double checking
+ * 1、构造器私有化，避免外部直接创建对象
+ * 2、声明一个私有的静态变量
+ * 3、创建一个对外的公共的静态方法  访问该变量，如果变量没有对象，创建该对象
+ * 
+ */
+class Jvm{
+	//声明一个私有的静态变量
+	private static Jvm instance=null;	//懒得创建对象
+	
+	//构造器私有化，避免外部直接创建对象
+	private Jvm() {
+		
+	}
+	
+	//创建一个对外的公共的静态方法  访问该变量，如果变量没有对象，创建该对象
+	public static synchronized Jvm getInstance(long time) {
+		//a  b ————>效率  提高已经存在对象的访问效率
+		if(null==instance) {	//提高效率      b进来以后发现有对象了，便不会创建，直接返回值。a创建完已经有对象了，b直接获取就行了
+			synchronized(Jvm.class) {//静态方法内没有this只能锁Jvm.class(对象的字节码信息)
+				try {
+					Thread.sleep(time);	//延时，放大错误
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				instance =new Jvm();
+			}
+		}
+		return instance;
+	}
+	
+	public static Jvm getInstance2(long time) {
+		// a   b  ————>效率不高  存在对象也需要等待
+		synchronized(Jvm.class) {
+			if(null==instance) {
+				try {
+					Thread.sleep(time);	//延时，放大错误
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				instance =new Jvm();
+			}
+			return instance;
+		}
+	}
+	
+	//创建一个对外的公共的静态方法  访问该变量，如果变量没有对象，创建该对象
+	public static Jvm getInstance1(long time) {
+		if(null==instance) {
+			try {
+				Thread.sleep(time);	//延时，放大错误
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			instance =new Jvm();
+		}
+		return instance;
+	}
+}
+
+
+
+
+package cn.bjsxt.thread.syn;
+/**
+ * 单例创建的方式
+ * 1、懒汉式
+ * 1）、构造器私有化
+ * 2）、声明私有的静态属性
+ * 3）、对外提供访问属性的静态方法，确保该对象存在
+ * @author zam
+ *
+ */
+public class MyJvm {
+	private static MyJvm instance;
+	private MyJvm() {
+		
+	}
+	public static MyJvm getInstance() {
+		if(null==instance) {	//提供效率
+			synchronized(MyJvm.class) {
+				if(null==instance) {	//安全
+					instance = new MyJvm();
+				}
+			}
+		}
+		return instance;
+	}
+}
+
+/**
+ * 2、饿汉式
+ * 1）、构造器私有化
+ * 2）、声明私有的静态属性，同时创建该对象
+ * 3）、对外提供访问属性的静态方法
+ * @author zam
+ *
+ */
+class MyJvm2 {
+	private static MyJvm2 instance = new MyJvm2();	//只要加载这个类，这个属性就会初始化
+	private MyJvm2() {
+		
+	}
+	public static MyJvm2 getInstance() {
+		return instance;
+	}
+}
+/**
+ * 类在使用的时候才加载,延缓加载时间
+ * @author zam
+ *
+ */
+class MyJvm3 {
+	private static class JVMholder{	//内部类   加载MyJvm3,不一定会加载JVMholder这个类，调用getInstance()方法用到时才会加载
+		private static MyJvm3 instance = new MyJvm3();
+	}
+	private MyJvm3() {
+	}
+	public static MyJvm3 getInstance() {
+		return JVMholder.instance;
+	}
+}
