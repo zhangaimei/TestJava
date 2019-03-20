@@ -1,0 +1,77 @@
+package cn.bjsxt.thread.info;
+
+public class MyThread implements Runnable{
+	private boolean flag = true;
+	private int num =0;
+	@Override
+	public void run() {
+		while(flag) {
+			System.out.println(Thread.currentThread().getName()+"————>"+num++);
+		}
+	}
+	public void stop() {
+		this.flag = !this.flag;	//取反，相当于变为false
+	}
+}
+
+
+
+package cn.bjsxt.thread.info;
+/**
+ * Thread.currentThread():当前线程
+ * setName()：设置名称
+ * getName()：获取名称
+ * isAlive()：判断状态
+ * @author zam
+ *
+ */
+public class InfoDemo01 {
+	
+	public static void main(String[] args) throws InterruptedException {
+		MyThread it = new MyThread();
+		Thread proxy = new Thread(it,"挨踢");
+		proxy.setName("test");
+		System.out.println(proxy.getName());
+		System.out.println(Thread.currentThread().getName());  //main
+		
+		proxy.start();
+		System.out.println("启动后的状态："+proxy.isAlive());
+		Thread.sleep(200);
+		it.stop();
+		Thread.sleep(100);
+		System.out.println("停止后的状态："+proxy.isAlive());
+	}
+}
+
+
+
+package cn.bjsxt.thread.info;
+/**
+ * 优先级：概率，不是绝对的先后顺序
+ * MAX_PRIORITY   10
+ * NORM_PRIORITY  5 (默认为5)
+ * MIN_PRIORITY   1
+ * 
+ * setPriority()
+ * getPriority()
+ * @author zam
+ *
+ */
+public class InfoDemo02 {
+
+	public static void main(String[] args) throws InterruptedException {
+		MyThread it1 = new MyThread();
+		Thread p1 = new Thread(it1,"挨踢1");
+		MyThread it2 = new MyThread();
+		Thread p2 = new Thread(it2,"挨踢2");
+		
+		p1.setPriority(Thread.MIN_PRIORITY); 	//设置优先级
+		p2.setPriority(Thread.MAX_PRIORITY);	//设置优先级
+		p1.start();
+		p2.start();
+		
+		Thread.sleep(100);
+		it1.stop();
+		it2.stop();
+	}
+}
