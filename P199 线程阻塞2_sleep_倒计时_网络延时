@@ -1,0 +1,108 @@
+//睡眠
+		int num =10;
+		while(true) {
+			System.out.println(num--);
+			Thread.sleep(1000);	//暂停
+			if(num<=0) {
+				break;
+			}
+		}
+
+
+
+
+package cn.bjsxt.thread.status;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ * 倒计时
+ * 1、倒数10个数，一秒内打印一个
+ * 2、倒计时
+ * @author zam
+ *
+ */
+public class SleepDemo01 {
+	public static void main(String[] args) throws InterruptedException {
+		
+		Date endTime = new Date(System.currentTimeMillis()+10*1000);//表示当前时间+10秒
+		long end = endTime.getTime();
+		while(true) {
+			//输出
+			System.out.println(new SimpleDateFormat("mm:ss").format(endTime));//按指定格式打印分钟和秒
+			                                                 //format：格式化为字符串。    parse：转化为日期
+			//等待一秒
+			Thread.sleep(1000);
+			//构建下一秒时间
+			endTime = new Date(endTime.getTime()-1000);
+			//10秒以内继续   否则退出
+			if(end-10000>endTime.getTime()) {
+				break;	//意味着while中的true变为false？
+			}
+		}
+	}
+}
+
+
+
+Console:
+22:00
+21:59
+21:58
+21:57
+21:56
+21:55
+21:54
+21:53
+21:52
+21:51
+21:50
+
+
+
+
+package cn.bjsxt.thread.status;
+
+public class SleepDemo02 {
+
+	public static void main(String[] args) {
+		//真实角色
+				Webe12306 web = new Webe12306();
+				//代理(实现了多个代理)
+				Thread t1 = new Thread(web,"路人甲");
+				Thread t2 = new Thread(web,"黄牛乙");
+				Thread t3 = new Thread(web,"工程师");
+				//启动线程
+				t1.start();
+			    t2.start();
+				t3.start();
+	}
+}
+
+class Webe12306 implements Runnable{
+	private int num = 50;
+	
+	@Override
+	public void run() {
+		while(true) {
+			if(num<=0) {
+				break;	//跳出循环
+			}
+			try {
+				Thread.sleep(500);	//run()方法不能对外声明异常
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println(Thread.currentThread().getName()+"抢到了"+num--);
+		}
+	}
+}
+
+
+Console:
+路人甲抢到了3
+黄牛乙抢到了2
+工程师抢到了1
+路人甲抢到了0
+黄牛乙抢到了-1

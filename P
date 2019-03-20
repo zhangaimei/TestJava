@@ -1,9 +1,0 @@
-//睡眠
-		int num =10;
-		while(true) {
-			System.out.println(num--);
-			Thread.sleep(1000);	//暂停
-			if(num<=0) {
-				break;
-			}
-		}
