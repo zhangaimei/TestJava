@@ -1,0 +1,119 @@
+package cn.bjsxt.thread.syn;
+
+public class SynDemo01 {
+
+	public static void main(String[] args) {
+		//真实角色
+				Webe12306 web = new Webe12306();
+				//代理(实现了多个代理)
+				Thread t1 = new Thread(web,"路人甲");
+				Thread t2 = new Thread(web,"黄牛乙");
+				Thread t3 = new Thread(web,"工程师");
+				//启动线程
+				t1.start();
+			    t2.start();
+				t3.start();
+	}
+}
+
+class Webe12306 implements Runnable{
+	private int num = 10;
+	private boolean flag = true;
+	@Override
+	public void run() {
+		while(flag) {
+			test06();
+		}
+	}
+	
+	//线程不安全  锁定资源不正确  
+	public void test05() {
+		synchronized((Integer)num) {	
+			if(num<=0) {
+				flag=false;	//跳出循环
+				return;
+			}
+			try {
+				Thread.sleep(500);	//模拟延时    run()方法不能对外声明异常
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println(Thread.currentThread().getName()+"抢到了"+num--);
+		}
+	}
+	
+	//锁定范围不正确  线程不安全
+	public void test04() {
+		synchronized(this) {	//括号内必须是引用类型，锁定this（代表这个资源）
+			if(num<=0) {
+				flag=false;	//跳出循环
+				return;
+			}
+		}
+			try {
+				Thread.sleep(500);	//模拟延时    run()方法不能对外声明异常
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println(Thread.currentThread().getName()+"抢到了"+num--);
+	}
+	public void test06() {
+		if(num<=0) {
+			flag=false;	//跳出循环
+			return;
+		}
+		//a  b  c
+		synchronized(this) {
+			try {
+				Thread.sleep(500);	//模拟延时    run()方法不能对外声明异常
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println(Thread.currentThread().getName()+"抢到了"+num--);
+		}
+	}
+	//线程安全  锁定正确
+	public void test03() {
+		synchronized(this) {	//括号内必须是引用类型，锁定this（代表这个资源）
+			if(num<=0) {
+				flag=false;	//跳出循环
+				return;
+			}
+			try {
+				Thread.sleep(500);	//模拟延时    run()方法不能对外声明异常
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println(Thread.currentThread().getName()+"抢到了"+num--);
+		}
+	}
+	
+	//线程安全  锁定正确
+	public synchronized void test02() {
+		if(num<=0) {
+			flag=false;	//跳出循环
+			return;
+		}
+		try {
+			Thread.sleep(500);	//模拟延时    run()方法不能对外声明异常
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println(Thread.currentThread().getName()+"抢到了"+num--);
+	}
+	
+	//线程不安全
+	public void test01() {
+		if(num<=0) {
+			flag=false;	//跳出循环
+			return;
+		}
+		try {
+			Thread.sleep(500);	//run()方法不能对外声明异常
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println(Thread.currentThread().getName()+"抢到了"+num--);
+	}	
+}
+
