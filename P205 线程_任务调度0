@@ -1,0 +1,26 @@
+package cn.bjsxt.thread.schedule;
+
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
+/**
+ * 了解
+ * Timer()
+ * schedule(TimerTask task, Date time)
+ * schedule(TimerTask task, Date firstTime, long period)
+ * 自学quartz
+ * @author zam
+ *
+ */
+public class TimeEemo01 {
+	public static void main(String[] args) {
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {	//匿名重写run方法
+			@Override
+			public void run() {
+				System.out.println("so easy");
+			}
+		}, new Date(System.currentTimeMillis()+1000), 200);	//1秒后运行，每隔200ms运行一次
+	}
+}
