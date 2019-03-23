@@ -1,0 +1,80 @@
+package cn.bjsxt.net.url;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class URLDemo01 {
+	public static void main(String[] args) throws MalformedURLException {
+		//绝对路径构建
+		URL url = new URL("http://www.baidu.com:80/index.html#aa?uname=bjsxt");//协议——域名——端口——资源——锚点（写死）——参数（用户的输入）（键值对形式）
+		System.out.println("协议："+url.getProtocol());
+		System.out.println("域名："+url.getHost());
+		System.out.println("端口："+url.getPort());
+		System.out.println("资源："+url.getFile());
+		System.out.println("相对路径："+url.getPath());
+		System.out.println("锚点："+url.getRef());  //锚点
+		System.out.println("参数："+url.getQuery());  //？参数：存在锚点  返回null，不存在，返回正确值
+	}
+}
+
+
+
+Console:
+协议：http
+域名：www.baidu.com
+端口：80
+资源：/index.html
+相对路径：/index.html
+锚点：aa?uname=bjsxt
+参数：null
+
+
+
+
+package cn.bjsxt.net.url;
+/**
+ * openStream()
+ */
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+
+import org.omg.CORBA_2_3.portable.InputStream;
+
+public class URLDemo02 {
+	public static void main(String[] args) throws IOException {
+		URL url = new URL("http://www.baidu.com");	//主页默认资源
+		
+		//获取资源网络流
+		/*java.io.InputStream is = url.openStream();
+		byte[] flush = new byte[1024];
+		int len=0;
+		while(-1!=(len=is.read(flush))) {
+			System.out.println(new String(flush,0,len));
+		}
+		is.close();*/
+		
+		BufferedReader br = 
+				new BufferedReader(new InputStreamReader(url.openStream(),"utf-8"));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("C:/Users/嘿嘿 黑/Desktop/新建文件夹/baidu.html"),"utf-8"));
+		
+		String msg =null;
+		while((msg=br.readLine())!=null) {
+			//System.out.println(msg);
+			bw.append(msg);
+			bw.newLine();
+		}
+		bw.flush();
+		bw.close();
+		br.close();
+	}
+}
+
+
+
+Console:
+获得了百度首页的源码
