@@ -1,0 +1,80 @@
+package cn.bjsxt.net.scoket;
+
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ *必须先启动服务器， 再连接
+ * 1、创建服务器  指定端口  ServerSocker（int port）
+ * 2、接收客户端连接  阻塞式
+ * 3、发送数据  （管道已经建立）
+ * @author zam
+ *
+ */
+public class Server {
+	public static void main(String[] args) throws IOException {
+		 //1、创建服务器  指定端口  ServerSocker（int port）
+		ServerSocket server = new ServerSocket(8888);	//端口用来区分软件
+		//2、接收客户端连接  阻塞式
+		Socket socket = server.accept();
+		System.out.println("一个客户端建立连接");	//运行之后在浏览器里输入http://localhost:8888,便会打印，这里只是请求，没有响应。
+		//3、发送数据  （管道已经建立）
+		String msg = "欢迎使用";
+		
+		/*BufferedWriter bw = new BufferedWriter(
+				new OutputStreamWriter(
+				socket.getOutputStream()));//字符串包装成字节流
+		bw.write(msg);
+		bw.newLine();
+		bw.flush();//不要关服务器 */
+		
+		//方法二：用DataOutputStream或Object，client端也要改为相应的
+		DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+		dos.writeUTF(msg);
+		dos.flush();
+	}
+}
+
+
+
+package cn.bjsxt.net.scoket;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+/**
+ * 1、创建客户端  必须指定服务器+端口  此时就在连接
+ * 2、接收数据
+ * 
+ * Socket(String host, int port)
+ * @author zam
+ *
+ */
+public class Client {
+	public static void main(String[] args) throws UnknownHostException, IOException {
+		//1、创建客户端  必须指定服务器+端口  此时就在连接
+		Socket client = new Socket("localhost",8888);
+		//2、接收数据
+		/*
+		BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+		String echo = br.readLine();  //阻塞式方法  reader是逐行读取，所以server中得有行的接收符
+		System.out.println(echo);*/
+		
+		DataInputStream dis = new DataInputStream(client.getInputStream());
+		String echo = dis.readUTF();
+		System.out.println(echo);
+	}
+}
+
+
+
+Console：
+欢迎使用
