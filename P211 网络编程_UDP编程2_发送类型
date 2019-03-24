@@ -1,0 +1,108 @@
+package cn.bjsxt.net.udp;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
+import java.net.SocketException;
+
+/**
+ * 客户端
+ * 1、创建客户端+端口
+ * 2、准备数据
+ * 3、打包（发送的地点以及端口）
+ * 4、发送  double——>字节数组
+ * 5、释放
+ * 
+ * 思考：89.12  数据+
+ * @author zam
+ *
+ */
+public class Client {
+	public static void main(String[] args) throws IOException {
+		//1、创建客户端 +端口
+		DatagramSocket client = new DatagramSocket(666);
+		//2、准备数据
+		double num =89.12;
+		byte[] data = convert(num);
+		//3、打包（发送的地点  及端口）DatagramPacket(byte[] buf, int length, InetAddress address, int port)
+		DatagramPacket packet = new DatagramPacket(data,data.length,new InetSocketAddress("localhost",8888));
+		//4、发送
+		client.send(packet);
+		//5、释放
+		client.close();
+ 	}
+	/**
+	 * 字节数组 数据源  +Data  输出流（不能使用多态）
+	 * @throws IOException 
+	 */
+	public static byte[] convert(double num) throws IOException {  //  double——>字节数组
+		byte[] data = null;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream dos = new DataOutputStream(bos);
+		dos.writeDouble(num);
+		dos.flush();
+		//获取数据
+		data = bos.toByteArray();
+		dos.close();
+		return data;
+	}
+}
+
+
+
+
+package cn.bjsxt.net.udp;
+
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
+
+/**
+ * 服务端
+ * 1、创建服务器+端口
+ * 2、准备接收容器
+ * 3、封装成包DatagramPacker(byte[] buf, int length)
+ * 4、接收数据
+ * 5、分析数据  字节数组——>double
+ * 6、释放
+ * @author zam
+ *
+ */
+public class Server {
+	public static void main(String[] args) throws IOException {
+		//1、创建服务器+端口
+		DatagramSocket server = new DatagramSocket(8888);
+		//2、准备接收容器
+		byte[] container = new byte[1024];
+		//3、封装成包DatagramPacker(byte[] buf, int length)
+		DatagramPacket packet = new DatagramPacket(container, container.length);
+		//4、接收数据
+		server.receive(packet);
+		//5、分析数据
+		double data = convert(packet.getData());
+		System.out.println(data);
+		//6、释放
+		server.close();
+ 	}
+	/**
+	 * 字节数组 +Data输入流（可以使用多态、匿名）
+	 * @throws IOException 
+	 */
+	public static double convert(byte[] data) throws IOException { // 字节数组——>double
+		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(data));
+		double num = dis.readDouble();
+		dis.close();
+		return num;
+	}
+}
+
+
+
+Console:(先运行server接收，再运行client)
+89.12
