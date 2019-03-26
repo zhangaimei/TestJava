@@ -1,0 +1,75 @@
+package cn.bjsxt.net.chat.demo01;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * 创建服务器
+ * 写出数据：输出流
+ * 读取数据：输入流
+ * @author zam
+ *
+ */
+public class server {
+	public static void main(String[] args) throws IOException {
+		ServerSocket server = new ServerSocket(9990);
+		Socket client =server.accept();
+		//写出数据  
+		//输入流
+		DataInputStream dis = new DataInputStream (client.getInputStream());
+		String msg = dis.readUTF();
+		//输出流
+		DataOutputStream dos = new DataOutputStream(client.getOutputStream());
+		dos.writeUTF("服务器——>"+msg);
+		dos.flush();
+	}
+}
+
+
+
+package cn.bjsxt.net.chat.demo01;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+/**
+ * 创建客户端：发送数据+接收数据
+ * 写出数据：输出流
+ * 读取数据：输入流
+ * 
+ * 输入流 与输出流在同一个线程内应该独立处理，彼此独立
+ * @author zam
+ */
+public class client {
+	
+	public static void main(String[] args) throws UnknownHostException, IOException {
+		Socket client = new Socket("localhost",9990);
+		//控制台输入流
+		BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+		DataOutputStream dos = new DataOutputStream(client.getOutputStream());	//包装一下输出流String info = console.readLine();
+		DataInputStream dis = new DataInputStream (client.getInputStream());//输出流
+		while(true) {
+			String info = console.readLine();
+			//输出流
+			dos.writeUTF(info);
+			dos.flush();
+			//输入流
+			String msg = dis.readUTF();
+			System.out.println(msg);
+		}
+	}
+}
+
+
+
+Console：
+张爱梅
+服务器——>张爱梅
