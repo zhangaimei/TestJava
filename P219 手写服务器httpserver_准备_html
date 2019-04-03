@@ -1,0 +1,135 @@
+package cn.bjsxt.server.demo01;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/*
+ * 创建服务器，并启动
+ */
+public class Server {
+	private ServerSocket server;
+	public static void main(String[] args) {
+		Server server = new Server();
+		server.start();
+	}
+	/**
+	 * 启动方法
+	 */
+	private void start() {
+		try {
+			server = new ServerSocket(8888);
+			this.receive();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 接收客户端
+	 */
+	private void receive() {
+		try {
+			Socket client = server.accept();
+			StringBuilder sb = new StringBuilder();
+			String msg = null;	//接收客户端的请求信息
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			
+			while((msg=br.readLine()).length()>0) {
+				sb.append(msg);
+				sb.append("\r\n");
+				if(null==msg) {
+					break;
+				}
+			}
+			//接收客户端的请求信息
+			String requestInfo = sb.toString().trim();	//去除空格
+			System.out.println(sb.toString());
+			System.out.println(requestInfo);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 停止服务器
+	 */
+	private void stop() {
+		
+	}
+}
+
+
+
+<html>
+	<head>
+		<title>第一个表单</title>
+	</head>
+	<body>
+		<pre>
+		method:请求方式get/post
+			get:数据量小，安全性不高 默认方式
+			post：量大，安全性相对高
+		action：请求的服务器路径
+		id：编号，前端区分唯一性，js中使用
+		name：名称，后端（服务器）区分唯一性，获取值
+		只要提交数据给后台，必须存在name
+		</pre>
+		<form method="get" action="http://localhost:8888/index.html">
+ 			用户名：<input type="text" name="uname" id="name"/>
+			密码：<input type="password" name="pwd" id="pass"/>
+			<input type="submit" value="登录"/>
+		</form>
+	</body>
+</html>
+
+
+Console:
+GET /index.html?uname=zhangaimei&pwd=123 HTTP/1.1
+Host: localhost:8888
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+
+GET /index.html?uname=zhangaimei&pwd=123 HTTP/1.1
+Host: localhost:8888
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+
+
+将html中的“get”改为“post”
+Console:
+POST /index.html HTTP/1.1
+Host: localhost:8888
+Connection: keep-alive
+Content-Length: 24
+Cache-Control: max-age=0
+Origin: null
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+
+POST /index.html HTTP/1.1
+Host: localhost:8888
+Connection: keep-alive
+Content-Length: 24
+Cache-Control: max-age=0
+Origin: null
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
